@@ -4,101 +4,61 @@
     {
       "title": "Microgrid Management with Reinforcement Learning",
       "featured": true,
-      "resume": true,
       "company": "TFG · Ingeniería Informática (UPNA)",
       "category": "Reinforcement Learning",
       "description": "Optimización y gestión inteligente de energía en microrredes eléctricas mediante algoritmos de Deep Reinforcement Learning (DQN y PPO).",
       "fullDescription": "Estudio comparativo y experimental de optimización y gestión energética inteligente en microrredes eléctricas mediante algoritmos de Aprendizaje por Refuerzo Profundo (Deep Q-Network - DQN y Proximal Policy Optimization - PPO) frente a controladores basados en reglas (RBC). Implementado con PyTorch y el simulador Pymgrid.",
       "tags": ["Reinforcement Learning", "PyTorch", "DQN", "PPO", "Smart Grids", "Pymgrid", "Python"],
-      "icon": "cpu-chip",
-      "sliderImage": "/images/projects/TFG_RL_MicroGrid.png",
-      "sliderOrder": 1,
       "backgroundImage": "/images/projects/TFG_RL_MicroGrid.png",
-      "images": [
-        "/images/projects/TFG_RL_MicroGrid.png"
-      ],
       "link": "https://github.com/AngelS017/TFG_RL_MicroGrid",
-      "colorIcon": "devicon:python",
       "githubRepo": "TFG_RL_MicroGrid"
     },
     {
       "title": "Artificial Bee Colony (ABC) for TSP",
       "featured": true,
-      "resume": true,
       "company": "Optimización & Metaheurísticas",
       "category": "Metaheurísticas",
       "description": "Optimización del Problema del Viajante de Comercio (TSP) mediante el algoritmo bioinspirado Artificial Bee Colony (ABC).",
       "fullDescription": "Implementación modular y estudio comparativo del algoritmo bioinspirado Artificial Bee Colony (Colonia Artificial de Abejas) aplicado al Problema del Viajante de Comercio (TSP) sobre una instancia real del dataset de Luxemburgo. Análisis de operadores de mutación (swap, insertion, k-opt) y convergencia computacional.",
       "tags": ["Metaheurísticas", "Swarm Intelligence", "TSP", "Optimización", "Algoritmos Genéticos", "Python"],
-      "icon": "map",
-      "sliderImage": "/images/projects/ABC_algorithm_for_TSP.jpg",
-      "sliderOrder": 2,
       "backgroundImage": "/images/projects/ABC_algorithm_for_TSP.jpg",
-      "images": [
-        "/images/projects/ABC_algorithm_for_TSP.jpg"
-      ],
       "link": "https://github.com/AngelS017/ABC-algorithm-for-TSP",
-      "colorIcon": "devicon:python",
       "githubRepo": "ABC-algorithm-for-TSP"
     },
     {
       "title": "Semantic Segmentation for Autonomous Driving",
       "featured": true,
-      "resume": true,
       "company": "Deep Learning / Computer Vision",
       "category": "Computer Vision",
       "description": "Segmentación semántica en tiempo real para vehículos autónomos en Cityscapes mediante U-Net y aceleración en TensorRT.",
       "fullDescription": "Pipeline end-to-end de segmentación semántica en tiempo real para conducción autónoma sobre Cityscapes. Implementa arquitectura U-Net con encoder ResNet-34 preentrenado (transfer learning, gradual unfreezing, mIoU 0.6279), optimización bayesiana de hiperparámetros con Optuna, tiling Gaussiano para alta resolución (1024×2048) y despliegue acelerado con ONNX Runtime y TensorRT FP16 en GPU.",
       "tags": ["PyTorch Lightning", "ResNet-34", "U-Net", "Optuna", "TensorRT", "ONNX", "Cityscapes"],
-      "icon": "eye",
-      "sliderImage": "/images/projects/SemanticSegmentation_AutonomousDriving.png",
-      "sliderOrder": 3,
       "backgroundImage": "/images/projects/SemanticSegmentation_AutonomousDriving.png",
-      "images": [
-        "/images/projects/SemanticSegmentation_AutonomousDriving.png"
-      ],
       "link": "https://github.com/AngelS017/SemanticSegmentation_AutonomousDriving",
-      "colorIcon": "devicon:python",
       "githubRepo": "SemanticSegmentation_AutonomousDriving"
     },
     {
       "title": "Amazon Reviews Rating Prediction",
       "featured": false,
-      "resume": true,
       "company": "NLP & Machine Learning",
       "category": "NLP",
       "description": "Análisis de sentimiento y clasificación de valoraciones en reseñas de Amazon mediante Procesamiento del Lenguaje Natural (NLP).",
       "fullDescription": "Sistema de clasificación y análisis de sentimiento sobre reseñas de productos de Amazon. Procesamiento de lenguaje natural avanzado (lematización, manejo de emoticonos, vectorización TF-IDF) y evaluación comparativa de rendimiento entre modelos supervisados (Regresión Logística, Naive Bayes y KNN).",
       "tags": ["NLP", "Scikit-Learn", "Sentiment Analysis", "TF-IDF", "Clasificación", "Python"],
-      "icon": "chat-bubble-left-right",
-      "sliderImage": "/images/projects/Amazon_Review_Prediction.png",
-      "sliderOrder": 4,
       "backgroundImage": "/images/projects/Amazon_Review_Prediction.png",
-      "images": [
-        "/images/projects/Amazon_Review_Prediction.png"
-      ],
       "link": "https://github.com/AngelS017/Amazon_Review_Prediction",
-      "colorIcon": "devicon:python",
       "githubRepo": "Amazon_Review_Prediction"
     },
     {
       "title": "KNN Student Pass/Fail Classifier in C",
       "featured": false,
-      "resume": false,
       "company": "Algoritmia & Sistemas",
       "category": "Machine Learning",
       "description": "Clasificador K-Nearest Neighbors implementado en C puro desde cero con optimización a bajo nivel para predecir el rendimiento académico.",
       "fullDescription": "Implementación nativa desde cero del algoritmo K-Nearest Neighbors (KNN) en lenguaje C puro sin librerías externas de ML. Optimización a bajo nivel en la gestión dinámica de memoria y cálculo de distancias euclídeas para la predicción del rendimiento académico estudiantil.",
       "tags": ["C", "Machine Learning", "KNN", "Low-Level Optimization", "Algoritmos"],
-      "icon": "command-line",
-      "sliderImage": "/images/projects/KNN_Students_PassOrFailed.png",
-      "sliderOrder": 5,
       "backgroundImage": "/images/projects/KNN_Students_PassOrFailed.png",
-      "images": [
-        "/images/projects/KNN_Students_PassOrFailed.png"
-      ],
       "link": "https://github.com/AngelS017/KNN_Students_PassOrFailed",
-      "colorIcon": "simple-icons:c",
       "githubRepo": "KNN_Students_PassOrFailed"
     }
   ]

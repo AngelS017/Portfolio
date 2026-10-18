@@ -46,8 +46,7 @@ jobs:
           pnpm update \
             astro tailwindcss @tailwindcss/vite @astrojs/check \
             typescript eslint @typescript-eslint/parser eslint-plugin-astro \
-            @types/node rss-parser prettier prettier-plugin-astro \
-            prettier-plugin-tailwindcss \
+            @types/node \
             --latest
 
       - name: Pin packageManager field to resolved pnpm version
@@ -58,21 +57,6 @@ jobs:
 
       - name: Security audit
         run: pnpm audit --audit-level=high
-
-      - name: Pin three.js CDN version
-        run: |
-          THREE_LATEST=$(pnpm view three version)
-          OLD_THREE=$(sed -n 's|.*cdn\.jsdelivr\.net/npm/three@\([^/]*\)/.*|\1|p' \
-            scripts/download-assets.mjs | head -1)
-          if [ "$OLD_THREE" = "$THREE_LATEST" ]; then
-            echo "three.js already at $THREE_LATEST — no change"
-          else
-            sed -i "s|/npm/three@[^/]*/|/npm/three@$THREE_LATEST/|g; \
-                    s|/npm/three/|/npm/three@$THREE_LATEST/|g" \
-              scripts/download-assets.mjs
-            rm -f public/scripts/three.min.js
-            echo "three.js: $OLD_THREE → $THREE_LATEST  (public/scripts/three.min.js removed)"
-          fi
 
       - name: Update README timestamp
         run: |
@@ -89,7 +73,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json pnpm-lock.yaml README.md scripts/download-assets.mjs
+          git add package.json pnpm-lock.yaml README.md
           if git diff --cached --quiet; then
             echo "All packages already up to date — nothing to commit."
           else

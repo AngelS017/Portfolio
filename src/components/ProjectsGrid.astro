@@ -11,7 +11,7 @@ const { featuredOnly = false } = Astro.props;
 
 const allProjectsData = await augmentProjectsWithImages(projectsFile.items as ProjectEntry[]);
 const displayProjects = featuredOnly
-  ? allProjectsData.filter((p) => p.sliderImage)
+  ? allProjectsData.filter((p) => p.featured)
   : allProjectsData;
 
 const categoryFilters = [...new Set(allProjectsData.map((p) => p.category))].map((cat) => ({
@@ -39,9 +39,8 @@ function getGitHubUrl(project: ProjectEntry) {
 
 function getProjectImage(project: ProjectEntry) {
   return (
+    project.featuredImage ||
     project.backgroundImage ||
-    project.sliderImage ||
-    (project as any).images?.[0] ||
     '/images/projects/default-bg.jpg'
   );
 }
@@ -51,7 +50,6 @@ const projectsJson = JSON.stringify(
     ...p,
     gitHubUrl: getGitHubUrl(p),
     projectImage: withBase(getProjectImage(p)),
-    sliderImage: p.sliderImage ? withBase(p.sliderImage) : p.sliderImage,
     backgroundImage: p.backgroundImage ? withBase(p.backgroundImage) : p.backgroundImage,
   }))
 );

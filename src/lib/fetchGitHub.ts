@@ -159,19 +159,16 @@ function localPathFor(repoName: string, imageUrl: string): string {
 
 export interface ProjectEntry {
   title: string;
-  company: string;
+  company?: string;
   category: string;
   description: string;
   fullDescription?: string;
   tags: string[];
-  icon: string;
   featuredImage?: string;
-  sliderImage?: string;
-  sliderOrder?: number;
   backgroundImage?: string;
   link: string;
-  colorIcon?: string;
   githubRepo?: string;
+  featured?: boolean;
 }
 
 // Singleton promise: Astro evaluates Hero.astro and Projects.astro in the same build pass.
