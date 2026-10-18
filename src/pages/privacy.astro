@@ -3,78 +3,73 @@ import Layout from '../layouts/Layout.astro';
 import personalData from '../data/personal.json';
 
 const currentYear = new Date().getFullYear();
-const title = `Privacy Policy | ${personalData.name}`;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const title = `Política de Privacidad | ${personalData.name}`;
 ---
 
-<Layout title={title} description={`Privacy policy for ${personalData.name}'s portfolio website.`}>
+<Layout title={title} description={`Política de privacidad del sitio web portfolio de ${personalData.name}.`}>
   <main id="main-content" class="policy-page">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl py-24">
-      <a href={`${base}`}  class="back-link">← Back to portfolio</a>
+      <a href={`${base}`} class="back-link">← Volver al portfolio</a>
 
-      <h1 class="text-3xl sm:text-4xl font-bold mt-8 mb-2 gradient-text">Privacy Policy</h1>
-      <p class="text-slate-500 text-sm mb-12">Last updated: January {currentYear}</p>
+      <h1 class="text-3xl sm:text-4xl font-bold mt-8 mb-2 gradient-text">Política de Privacidad</h1>
+      <p class="text-slate-500 text-sm mb-12">Última actualización: Enero de {currentYear}</p>
 
       <div class="prose-section">
-        <h2>1. Information We Collect</h2>
+        <h2>1. Información que recopilamos</h2>
         <p>
-          This is a static portfolio website. We collect only information you voluntarily provide
-          through the contact form: your name, email address, and message content.
+          Este es un sitio web de portfolio estático. Únicamente recopilamos la información que tú proporcionas
+          voluntariamente a través del formulario de contacto: tu nombre, dirección de correo electrónico y el contenido de tu mensaje.
         </p>
         <p>
-          We do not use cookies, tracking pixels, or analytics scripts. We do not collect IP
-          addresses or browsing behaviour.
-        </p>
-
-        <h2>2. How We Use Your Information</h2>
-        <p>
-          Information submitted via the contact form is used solely to respond to your inquiry.
-          Contact form submissions are processed by
-          <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> — their
-          <a href="https://web3forms.com/privacy" target="_blank" rel="noopener">privacy policy</a>
-          governs that data.
+          No utilizamos cookies de seguimiento, píxeles ni scripts de analítica. No recopilamos direcciones IP ni comportamientos de navegación.
         </p>
 
-        <h2>3. Third-Party Services</h2>
-        <p>This site loads resources from the following third-party services:</p>
+        <h2>2. Cómo utilizamos tu información</h2>
+        <p>
+          La información enviada mediante el formulario de contacto se utiliza exclusivamente para responder a tu consulta.
+          Los envíos del formulario son procesados por
+          <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> — su
+          <a href="https://web3forms.com/privacy" target="_blank" rel="noopener">política de privacidad</a>
+          regula el tratamiento de dichos datos.
+        </p>
+
+        <h2>3. Servicios de terceros</h2>
+        <p>Este sitio web carga recursos de los siguientes servicios externos:</p>
         <ul>
           <li>
-            <strong>Google Fonts</strong> — typography (Inter). Font files are cached locally at build
-            time and served from this domain. Requests reach <code>fonts.googleapis.com</code> only if
-            the local cache could not be built (e.g. no network access during the build).
+            <strong>Google Fonts</strong> — tipografía (Inter). Los archivos de fuentes se guardan en caché local durante el despliegue
+            y se sirven desde este dominio.
           </li>
           <li>
-            <strong>Iconify</strong> — social icons loaded on demand from <code
-              >api.iconify.design</code
-            >.
+            <strong>Iconify</strong> — iconos cargados bajo demanda desde <code>api.iconify.design</code>.
           </li>
-          <li><strong>Web3Forms</strong> — contact form submission endpoint.</li>
+          <li><strong>Web3Forms</strong> — punto de conexión para el envío del formulario de contacto.</li>
         </ul>
         <p>
-          Each of these services may log your IP address as part of normal server operation. Please
-          review their respective privacy policies for details.
+          Cada uno de estos servicios puede registrar tu dirección IP como parte del funcionamiento normal de sus servidores.
+          Por favor, consulta sus respectivas políticas de privacidad para más detalles.
         </p>
 
-        <h2>4. Data Retention</h2>
+        <h2>4. Conservación de datos</h2>
         <p>
-          We do not store any personal data on our own servers. Contact form data is retained by
-          Web3Forms per their policy.
+          No almacenamos ningún dato personal en servidores propios. Los datos del formulario de contacto son gestionados por Web3Forms conforme a su política.
         </p>
 
-        <h2>5. Your Rights</h2>
+        <h2>5. Tus derechos</h2>
         <p>
-          You may request deletion of any contact form submission by emailing
+          Puedes solicitar la eliminación de cualquier mensaje enviado mediante el formulario escribiendo a
           <a href={`mailto:${personalData.email}`}>{personalData.email}</a>.
         </p>
 
-        <h2>6. Changes to This Policy</h2>
+        <h2>6. Modificaciones a esta política</h2>
         <p>
-          This policy may be updated periodically. The date at the top of this page reflects the
-          most recent revision.
+          Esta política puede actualizarse periódicamente. La fecha en la parte superior refleja la revisión más reciente.
         </p>
 
-        <h2>7. Contact</h2>
+        <h2>7. Contacto</h2>
         <p>
-          Privacy questions? Reach out at
+          ¿Dudas sobre privacidad? Escríbeme a
           <a href={`mailto:${personalData.email}`}>{personalData.email}</a>.
         </p>
       </div>

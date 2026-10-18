@@ -233,14 +233,13 @@
     transform: translateY(-2px);
   }
 
-  .card,
-  .card.cert-in-progress {
+  .card {
     background: var(--bg-card);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--border);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    border-radius: 0.75rem;
+    border-radius: 1.25rem;
     padding: 1.5rem;
     transition:
       border-color 0.3s,
@@ -253,9 +252,15 @@
     box-shadow: 0 8px 40px rgba(99, 102, 241, 0.12);
   }
 
-  [data-theme="light"] .card,
-  [data-theme="light"] .card.cert-in-progress {
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  [data-theme="light"] .card {
+    background: var(--bg-card);
+    border-color: var(--border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  [data-theme="light"] .card:hover {
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.12);
   }
 
   .glass-nav {
@@ -321,7 +326,11 @@
     }
   }
 
-  .tag {
+  .tag,
+  .education-tag,
+  .pillar-tag,
+  .cert-skill-tag,
+  .about-meta-pill {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     background: rgba(99, 102, 241, 0.1);
@@ -333,10 +342,77 @@
     letter-spacing: 0.03em;
   }
 
-  [data-theme="light"] .tag {
-    color: #4338ca;
-    background: rgba(67, 56, 202, 0.08);
-    border-color: rgba(67, 56, 202, 0.25);
+  [data-theme="light"] .tag,
+  [data-theme="light"] .education-tag,
+  [data-theme="light"] .pillar-tag,
+  [data-theme="light"] .cert-skill-tag,
+  [data-theme="light"] .about-meta-pill {
+    color: #4338ca !important;
+    background: rgba(67, 56, 202, 0.08) !important;
+    border-color: rgba(67, 56, 202, 0.25) !important;
+  }
+
+  [data-theme="light"] .about-pillar-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.04) !important;
+  }
+  [data-theme="light"] .about-pillar-card:hover {
+    background: #ffffff !important;
+    border-color: rgba(99, 102, 241, 0.5) !important;
+    box-shadow: 0 4px 18px rgba(99, 102, 241, 0.12) !important;
+  }
+  [data-theme="light"] .about-pillar-card h4 {
+    color: #1e293b !important;
+  }
+  [data-theme="light"] .about-pillar-card p {
+    color: #475569 !important;
+  }
+  [data-theme="light"] .pillar-icon-box {
+    background: rgba(99, 102, 241, 0.1) !important;
+    border: 1px solid rgba(99, 102, 241, 0.25) !important;
+    color: #4f46e5 !important;
+  }
+
+  [data-theme="light"] .contact-form-input,
+  [data-theme="light"] #contact input[type='text'],
+  [data-theme="light"] #contact input[type='email'],
+  [data-theme="light"] #contact textarea {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(99, 102, 241, 0.22) !important;
+    color: #1e293b !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  }
+  [data-theme="light"] .contact-form-input::placeholder,
+  [data-theme="light"] #contact input::placeholder,
+  [data-theme="light"] #contact textarea::placeholder {
+    color: #94a3b8 !important;
+  }
+  [data-theme="light"] .contact-form-input:focus,
+  [data-theme="light"] #contact input:focus,
+  [data-theme="light"] #contact textarea:focus {
+    background: #ffffff !important;
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18) !important;
+    outline: none !important;
+  }
+  .contact-field-label {
+    color: var(--text);
+  }
+  [data-theme="light"] .contact-field-label {
+    color: #0f172a !important;
+  }
+  [data-theme="light"] .contact-social-link {
+    color: #475569 !important;
+    background: #ffffff !important;
+    border: 1.5px solid rgba(203, 213, 225, 0.85) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  }
+  [data-theme="light"] .contact-social-link:hover {
+    color: #0f172a !important;
+    background: #ffffff !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.18) !important;
   }
 
   .gradient-divider {
@@ -407,11 +483,6 @@ body.page-hidden * {
     padding-top: 3rem;
     padding-bottom: 3rem;
   }
-  .hero-badge-icon,
-  .pf-badge,
-  .pf-counter {
-    display: none !important;
-  }
 }
 
 @media (min-width: 640px) and (max-width: 767px) {
@@ -438,55 +509,66 @@ body.page-hidden * {
   filter: brightness(24);
 }
 
-[data-theme="light"] #about {
-  background-color: #fcfcfc;
-}
-
-[data-theme="light"] #projects {
-  background-color: #dbdfee;
-}
-
 [data-theme="light"] .text-slate-300 {
-  color: rgb(80, 80, 102);
+  color: #334155;
 }
 
 [data-theme="light"] .text-white {
-  color: rgb(106, 106, 106);
+  color: #0f172a;
 }
 
-[data-theme="light"] .cert-in-progress {
-  background: var(--bg-card) !important;
-  box-shadow: 0 8px 32px #00000040;
+
+[data-theme="light"] .text-backdrop,
+[data-theme="light"] #home .text-backdrop {
+  background: transparent !important;
+  border: none !important;
+  border-left: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
 }
 
+[data-theme="light"] #home h1,
 [data-theme="light"] .text-backdrop h1 {
-  color: var(--bg-input);
+  color: #0f172a !important;
 }
 
+[data-theme="light"] #home h2,
+[data-theme="light"] #home h2.text-slate-400 {
+  color: #475569 !important;
+}
+
+[data-theme="light"] #home p.text-slate-400,
 [data-theme="light"] p.text-base.text-slate-400.text-backdrop {
-  color: var(--bg-nav);
+  color: #334155 !important;
 }
 
-/* ===== PRINT / RESUME ===== */
-
-.print-only {
-  display: none;
+[data-theme="light"] .hero-social-circle {
+  color: #475569 !important;
+  background: #ffffff !important;
+  border: 1.5px solid rgba(203, 213, 225, 0.85) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
-@page {
-  size: letter;
-  margin: 0.55in 0.6in;
+[data-theme="light"] .hero-social-circle:hover {
+  color: #0f172a !important;
+  background: #ffffff !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.18) !important;
+}
+
+[data-theme="light"] .hero-social-circle[data-platform="github"]:hover {
+  border-color: #0f172a !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .hero-social-circle[data-platform="linkedin"]:hover {
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
 }
 
 @media print {
-  .web-only {
-    display: none !important;
-  }
-
-  .print-only {
-    display: block !important;
-  }
-
   body {
     background: #fff !important;
     background-image: none !important;

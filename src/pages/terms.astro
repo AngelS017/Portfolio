@@ -3,70 +3,62 @@ import Layout from '../layouts/Layout.astro';
 import personalData from '../data/personal.json';
 
 const currentYear = new Date().getFullYear();
-const title = `Terms of Service | ${personalData.name}`;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const title = `Términos de Servicio | ${personalData.name}`;
 ---
 
 <Layout
   title={title}
-  description={`Terms of service for ${personalData.name}'s portfolio website.`}
+  description={`Términos de servicio del sitio web portfolio de ${personalData.name}.`}
 >
   <main id="main-content" class="policy-page">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl py-24">
-      <a href={`${base}`}  class="back-link">← Back to portfolio</a>
+      <a href={`${base}`} class="back-link">← Volver al portfolio</a>
 
-      <h1 class="text-3xl sm:text-4xl font-bold mt-8 mb-2 gradient-text">Terms of Service</h1>
-      <p class="text-slate-500 text-sm mb-12">Last updated: January {currentYear}</p>
+      <h1 class="text-3xl sm:text-4xl font-bold mt-8 mb-2 gradient-text">Términos de Servicio</h1>
+      <p class="text-slate-500 text-sm mb-12">Última actualización: Enero de {currentYear}</p>
 
       <div class="prose-section">
-        <h2>1. Acceptance of Terms</h2>
+        <h2>1. Aceptación de los términos</h2>
         <p>
-          By accessing and using this website, you accept and agree to be bound by these Terms of
-          Service. If you do not agree to these terms, please do not use this website.
+          Al acceder y utilizar este sitio web, aceptas y te comprometes a cumplir con estos Términos
+          de Servicio. Si no estás de acuerdo con alguna parte de ellos, por favor no utilices este sitio.
         </p>
 
-        <h2>2. Use of Website</h2>
+        <h2>2. Uso del sitio web</h2>
         <p>
-          This website is a personal portfolio. You may view and share content for informational and
-          non-commercial purposes. You may not reproduce, redistribute, or commercially exploit any
-          content without prior written permission.
+          Este sitio web es un portfolio personal. Puedes visualizar y compartir el contenido para fines
+          informativos y no comerciales. No está permitida la reproducción o explotación comercial de ningún contenido sin autorización previa por escrito.
         </p>
 
-        <h2>3. Intellectual Property</h2>
+        <h2>3. Propiedad intelectual</h2>
         <p>
-          All content on this website — including text, code samples, images, and design — is the
-          property of {personalData.name} unless otherwise noted. Open-source projects linked from this
-          site are governed by their respective licenses.
+          Todo el contenido de este sitio web —incluyendo textos, código, imágenes y diseño— es propiedad de {personalData.name} salvo indicación contraria. Los proyectos de código abierto vinculados se rigen por sus respectivas licencias.
         </p>
 
-        <h2>4. Contact Form</h2>
+        <h2>4. Formulario de contacto</h2>
         <p>
-          Submissions via the contact form are used solely to respond to your inquiry. By submitting
-          the form you agree to be contacted at the email address you provide.
+          Los mensajes enviados a través del formulario de contacto se emplean exclusivamente para dar respuesta a tu solicitud. Al enviar el formulario aceptas ser contactado en la dirección de correo proporcionada.
         </p>
 
-        <h2>5. External Links</h2>
+        <h2>5. Enlaces externos</h2>
         <p>
-          This site may contain links to external websites. These links are provided for convenience
-          only. We have no control over and accept no responsibility for the content of external
-          sites.
+          Este sitio puede incluir enlaces a páginas web de terceros facilitados únicamente como referencia. No ejercemos control alguno ni asumimos responsabilidad por el contenido de dichos sitios externos.
         </p>
 
-        <h2>6. Limitation of Liability</h2>
+        <h2>6. Limitación de responsabilidad</h2>
         <p>
-          This website is provided "as is" without any representations or warranties. We shall not
-          be liable for any loss or damage arising from use of or reliance on information on this
-          site.
+          Este sitio web se proporciona "tal cual", sin garantías expresas o implícitas. No nos hacemos responsables de pérdidas o daños derivados del uso o de la confianza depositada en la información contenida en el sitio.
         </p>
 
-        <h2>7. Changes</h2>
+        <h2>7. Modificaciones</h2>
         <p>
-          These terms may be updated at any time. Continued use of the website constitutes
-          acceptance of any revised terms.
+          Estos términos pueden actualizarse en cualquier momento. El uso continuado del sitio tras cualquier cambio constituye la aceptación de los términos revisados.
         </p>
 
-        <h2>8. Contact</h2>
+        <h2>8. Contacto</h2>
         <p>
-          Questions about these terms? Reach out at
+          ¿Preguntas sobre estos términos? Puedes ponerte en contacto en
           <a href={`mailto:${personalData.email}`}>{personalData.email}</a>.
         </p>
       </div>

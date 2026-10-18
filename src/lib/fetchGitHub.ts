@@ -162,6 +162,7 @@ export interface ProjectEntry {
   company: string;
   category: string;
   description: string;
+  fullDescription?: string;
   tags: string[];
   icon: string;
   featuredImage?: string;
@@ -179,7 +180,7 @@ export interface ProjectEntry {
 let _buildResult: Promise<ProjectEntry[]> | null = null;
 
 export async function augmentProjectsWithImages(projects: ProjectEntry[]): Promise<ProjectEntry[]> {
-  if (_buildResult) return _buildResult;
+  if (!import.meta.env.DEV && _buildResult) return _buildResult;
   _buildResult = _doAugment(projects);
   return _buildResult;
 }

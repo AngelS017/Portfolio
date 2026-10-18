@@ -1,127 +1,247 @@
 ---
 import certificationsData from '../data/certifications.json';
+import { withBase } from '../lib/assetPath';
 
-type CertType = 'certification' | 'professional-development' | 'in-progress';
+const PAGE_SIZE = 3;
 
-// Returns the CSS class for the status badge chip (green / amber / blue).
-function badgeClass(type: CertType) {
-  if (type === 'professional-development') return 'badge-pro-dev';
-  if (type === 'in-progress') return 'badge-in-progress';
-  return 'badge-earned';
-}
+const certificates = certificationsData.map((cert, index) => ({
+  ...cert,
+  index,
+  image: withBase(cert.image),
+}));
 
-// Returns the Tailwind hover utility that colours the certification title on card hover.
-function titleHoverClass(type: CertType) {
-  if (type === 'professional-development') return 'group-hover:text-amber-400';
-  if (type === 'in-progress') return 'group-hover:text-blue-400';
-  return 'group-hover:text-accent';
-}
+const totalPages = Math.ceil(certificates.length / PAGE_SIZE);
+const pages = Array.from({ length: totalPages }, (_, pageIndex) =>
+  certificates.slice(pageIndex * PAGE_SIZE, (pageIndex + 1) * PAGE_SIZE)
+);
 
-// Returns an optional BEM modifier class added to the card for type-specific border/shadow overrides.
-function cardModClass(type: CertType) {
-  if (type === 'in-progress') return 'cert-in-progress';
-  if (type === 'professional-development') return 'cert-pro-dev';
-  return '';
-}
+const certsJson = JSON.stringify(certificates);
 ---
 
-<section id="certifications" class="py-24" style="scroll-margin-top: 80px;">
+<section id="certifications" class="pt-6 pb-20 sm:pt-8 sm:pb-24" style="background: var(--bg-section); scroll-margin-top: 64px;">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16 reveal">
-      <p class="text-sm font-semibold tracking-widest text-highlight uppercase mb-3">Credentials</p>
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold section-title">Certifications</h2>
-      <div class="flex flex-wrap items-center justify-center gap-4 mt-5">
-        <span class="legend-item">
-          <span class="legend-dot dot-earned"></span>Certification
-        </span>
-        <span class="legend-item">
-          <span class="legend-dot dot-pro-dev"></span>Professional Development
-        </span>
-        <span class="legend-item">
-          <span class="legend-dot dot-in-progress"></span>In Progress
-        </span>
-      </div>
+    <!-- Section Header -->
+    <div class="text-center mb-8 sm:mb-10 reveal">
+      <p class="text-sm font-semibold tracking-widest text-highlight uppercase mb-2">
+        Acreditaciones & Formación Especializada
+      </p>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold section-title">
+        Certificados
+      </h2>
     </div>
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-      {
-        certificationsData.map((cert, i) => {
-          const type = (cert.type ?? 'certification') as CertType;
-          return (
+    <!-- Carousel Viewport (Páginas de 3 certificados) -->
+    <div class="max-w-6xl mx-auto certs-carousel-viewport">
+      <div
+        id="certs-track"
+        class="certs-track"
+      >
+        {
+          pages.map((pageCerts, pageIndex) => (
             <div
-              class={`card group reveal ${cardModClass(type)}`}
-              style={`transition-delay: ${(i % 2) * 0.1}s;`}
+              class="cert-page-slide"
+              data-page-slide={pageIndex}
             >
-              <div class="space-y-3">
-                <div class="flex items-start justify-between gap-4">
-                  <h3
-                    class={`text-base font-bold text-white transition-colors leading-snug ${titleHoverClass(type)}`}
-                  >
-                    {cert.name}
-                  </h3>
-                  <span class={`cert-badge ${badgeClass(type)}`}>
-                    {type === 'in-progress' && <span class="badge-pulse-dot" />}
-                    {cert.status}
-                  </span>
-                </div>
-
-                <p
-                  class={`text-xs font-semibold uppercase tracking-wider ${type === 'professional-development' ? 'text-amber-500/70' : type === 'in-progress' ? 'text-blue-400/80' : 'text-accent'}`}
-                >
-                  {cert.issuer}
-                  {type === 'professional-development' && <span class="issuer-tag">Course</span>}
-                </p>
-
-                <p class="text-slate-400 text-sm leading-relaxed">{cert.description}</p>
-
-                <div class="flex items-center justify-between pt-2 border-t border-white/5">
-                  <span class="text-xs text-slate-600 font-mono">{cert.date}</span>
-
-                  {type === 'in-progress' ? (
-                    <span class="in-progress-label">
-                      <span class="ip-pulse" />
-                      Actively Studying
-                    </span>
-                  ) : cert.credentialUrl ? (
-                    <a
-                      href={cert.credentialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class={`inline-flex items-center gap-1.5 transition-colors text-xs font-medium ${type === 'professional-development' ? 'text-amber-500/70 hover:text-amber-400' : 'text-accent hover:text-highlight'}`}
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch w-full">
+                {
+                  pageCerts.map((cert, i) => (
+                    <article
+                      class="cert-card-v reveal"
+                      data-cert-index={cert.index}
+                      role="button"
+                      tabindex="0"
+                      aria-label={`Ver certificado oficial de ${cert.name}`}
+                      style={`transition-delay: ${i * 0.1}s;`}
                     >
-                      <span>
-                        {type === 'professional-development'
-                          ? 'View Certificate'
-                          : 'View Credential'}
-                      </span>
-                      <svg
-                        class="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      <!-- Photo on Top (Sketch 3: [Cert Foto]) -->
+                      <div class="cert-card-media">
+                        <img
+                          src={cert.image}
+                          alt={`Certificado oficial de ${cert.name}`}
+                          loading="lazy"
+                          class="cert-card-img"
+                          width="480"
+                          height="360"
                         />
-                      </svg>
-                    </a>
-                  ) : (
-                    <span class="text-slate-700 text-xs italic">No link available</span>
-                  )}
-                </div>
+                        <div class="cert-card-media-overlay">
+                          <span class="cert-card-zoom-hint">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                            Ver certificado oficial
+                          </span>
+                        </div>
+                      </div>
+
+                      <!-- Content (Sketch 3: Nombre + descripción breve) -->
+                      <div class="cert-card-body">
+                        <div class="flex items-center justify-between gap-2 mb-1.5">
+                          <span class="cert-issuer-badge">{cert.issuer}</span>
+                          <span class="cert-date-text">{cert.date}</span>
+                        </div>
+
+                        <h3 class="cert-card-title text-base sm:text-lg font-bold mb-1.5 leading-snug">
+                          {cert.name}
+                        </h3>
+
+                        <p class="cert-card-desc text-xs sm:text-sm leading-relaxed mb-3 line-clamp-2">
+                          {cert.description}
+                        </p>
+
+                        <div class="cert-card-footer mt-auto pt-2.5">
+                          <div class="flex flex-wrap gap-1.5">
+                            {cert.skills.slice(0, 3).map((skill: string) => (
+                              <span class="tag cert-skill-tag">{skill}</span>
+                            ))}
+                            {cert.skills.length > 3 && (
+                              <span class="tag cert-skill-tag text-accent font-bold">+{cert.skills.length - 3}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  ))
+                }
               </div>
             </div>
-          );
-        })
-      }
+          ))
+        }
+      </div>
+
+      <!-- Pagination / Slider Bar (Barra de páginas de certificados: 1, 2...) -->
+      <div class="certs-pagination-bar mt-3.5 sm:mt-4 reveal" aria-label="Navegación de páginas de certificados">
+        <button
+          id="cert-prev-btn"
+          class="cert-nav-arrow"
+          aria-label="Página anterior"
+          title="Anterior"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-2" id="cert-page-buttons">
+          {
+            pages.map((_, i) => (
+              <button
+                class={`cert-page-btn ${i === 0 ? 'active' : ''}`}
+                data-page-index={i}
+                aria-label={`Ir a la página ${i + 1}`}
+              >
+                {i + 1}
+              </button>
+            ))
+          }
+        </div>
+
+        <button
+          id="cert-next-btn"
+          class="cert-nav-arrow"
+          aria-label="Página siguiente"
+          title="Siguiente"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
 
-<script>
+<!-- Certificate Official View Modal (Sketch 3: "al hacer click aparece el certificado oficial en pantalla") -->
+<div
+  id="cert-modal"
+  class="cert-modal-backdrop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="cert-modal-title"
+  hidden
+>
+  <div class="cert-modal-container" id="cert-modal-container">
+    <button class="cert-modal-close" id="cert-modal-close" aria-label="Cerrar modal">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="cert-modal-grid">
+      <!-- Full Official Certificate Preview Image -->
+      <div class="cert-modal-image-wrap">
+        <img
+          id="cert-modal-img"
+          src=""
+          alt="Certificado oficial"
+          class="cert-modal-img"
+          loading="lazy"
+        />
+        <div class="cert-modal-image-shine"></div>
+      </div>
+
+      <!-- Certificate Details & Verification Action -->
+      <div class="cert-modal-content">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <span id="cert-modal-issuer" class="cert-issuer-badge"></span>
+        </div>
+
+        <h3 id="cert-modal-title" class="text-2xl sm:text-3xl font-extrabold text-white mb-3 leading-snug"></h3>
+        
+        <div class="flex items-center gap-3 text-sm text-slate-300 mb-4 font-mono">
+          <span id="cert-modal-date"></span>
+          <span>•</span>
+          <span id="cert-modal-hours" class="text-highlight font-semibold"></span>
+        </div>
+
+        <div id="cert-modal-id-wrap" class="hidden mb-4 text-xs sm:text-sm font-mono bg-slate-900/90 border border-slate-700/60 rounded-xl px-4 py-2.5 flex items-center justify-between">
+          <span class="text-slate-400 font-semibold">ID Credencial:</span>
+          <span id="cert-modal-id" class="text-accent font-bold select-all ml-2 tracking-wide font-mono"></span>
+        </div>
+
+        <p id="cert-modal-desc" class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6"></p>
+
+        <h4 class="text-xs sm:text-sm font-bold text-highlight uppercase tracking-wider mb-2.5">
+          Habilidades & Competencias Adquiridas
+        </h4>
+        <div id="cert-modal-skills" class="flex flex-wrap gap-2 mb-8"></div>
+
+        <div class="cert-modal-actions mt-auto pt-5 border-t border-slate-700/50 flex flex-col sm:flex-row gap-3">
+          <a
+            id="cert-modal-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="cert-verify-btn"
+          >
+            <span>Verificar Credencial Oficial</span>
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          <a
+            id="cert-modal-view-full"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="cert-view-full-btn"
+            title="Abrir imagen de certificado a resolución completa"
+          >
+            <span>Ver Certificado Completo</span>
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ certsJson }}>
+  // @ts-nocheck
+  const certs = JSON.parse(certsJson);
+
+  // Reveal animations
   document.querySelectorAll('#certifications .reveal').forEach((el) => {
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -134,137 +254,680 @@ function cardModClass(type: CertType) {
     );
     io.observe(el);
   });
+
+  // Modal logic
+  const modal = document.getElementById('cert-modal');
+  const container = document.getElementById('cert-modal-container');
+  const closeBtn = document.getElementById('cert-modal-close');
+  const modalImg = document.getElementById('cert-modal-img');
+  const modalIssuer = document.getElementById('cert-modal-issuer');
+  const modalTitle = document.getElementById('cert-modal-title');
+  const modalDate = document.getElementById('cert-modal-date');
+  const modalHours = document.getElementById('cert-modal-hours');
+  const modalIdWrap = document.getElementById('cert-modal-id-wrap');
+  const modalId = document.getElementById('cert-modal-id');
+  const modalDesc = document.getElementById('cert-modal-desc');
+  const modalSkills = document.getElementById('cert-modal-skills');
+  const modalLink = document.getElementById('cert-modal-link');
+  const modalViewFull = document.getElementById('cert-modal-view-full');
+
+  function openCertModal(idx) {
+    const cert = certs[idx];
+    if (!cert) return;
+
+    modalImg.src = cert.image;
+    modalImg.alt = `Certificado oficial de ${cert.name}`;
+    modalIssuer.textContent = cert.issuer;
+    modalTitle.textContent = cert.name;
+    modalDate.textContent = `Fecha: ${cert.date}`;
+    modalHours.textContent = `Dedicación: ${cert.hours}`;
+    modalDesc.textContent = cert.description;
+
+    if (cert.credentialId) {
+      modalId.textContent = cert.credentialId;
+      modalIdWrap.classList.remove('hidden');
+    } else {
+      modalIdWrap.classList.add('hidden');
+    }
+
+    modalSkills.innerHTML = '';
+    for (const skill of cert.skills || []) {
+      const span = document.createElement('span');
+      span.className = 'cert-modal-skill-tag';
+      span.textContent = skill;
+      modalSkills.appendChild(span);
+    }
+
+    if (cert.credentialUrl) {
+      modalLink.href = cert.credentialUrl;
+      modalLink.classList.remove('hidden');
+    } else {
+      modalLink.classList.add('hidden');
+    }
+
+    if (modalViewFull) {
+      modalViewFull.href = cert.image;
+    }
+
+    modal.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+    void container.offsetWidth;
+    modal.classList.add('modal-open');
+    closeBtn.focus();
+  }
+
+  function closeCertModal() {
+    modal.classList.remove('modal-open');
+    modal.classList.add('modal-closing');
+    setTimeout(() => {
+      modal.setAttribute('hidden', '');
+      modal.classList.remove('modal-closing');
+      document.body.style.overflow = '';
+    }, 280);
+  }
+
+  const cards = document.querySelectorAll('.cert-card-v');
+  cards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.dataset.certIndex, 10);
+      openCertModal(idx);
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const idx = parseInt(card.dataset.certIndex, 10);
+        openCertModal(idx);
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', closeCertModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeCertModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) closeCertModal();
+  });
+
+  // Page Slider logic (Páginas de 3 certificados)
+  const track = document.getElementById('certs-track');
+  const pageButtons = document.querySelectorAll('.cert-page-btn');
+  const prevBtn = document.getElementById('cert-prev-btn');
+  const nextBtn = document.getElementById('cert-next-btn');
+  const totalPages = pageButtons.length;
+  let currentPage = 0;
+
+  function setPage(idx) {
+    if (totalPages <= 1) return;
+    if (idx < 0) idx = totalPages - 1;
+    if (idx >= totalPages) idx = 0;
+    currentPage = idx;
+
+    track.style.transform = `translateX(-${currentPage * 100}%)`;
+
+    pageButtons.forEach((btn, i) => {
+      btn.classList.toggle('active', i === currentPage);
+    });
+
+    // Asegurar que las tarjetas de la página activa sean visibles
+    const activeSlide = track.querySelector(`[data-page-slide="${currentPage}"]`);
+    if (activeSlide) {
+      activeSlide.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+    }
+  }
+
+  pageButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.pageIndex, 10);
+      setPage(idx);
+    });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      setPage(currentPage - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      setPage(currentPage + 1);
+    });
+  }
+
+  // Touch swipe support
+  let touchStartX = 0;
+  if (track) {
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) setPage(currentPage + 1);
+        else setPage(currentPage - 1);
+      }
+    }, { passive: true });
+  }
+
+  // Initial alignment
+  setTimeout(() => setPage(0), 50);
 </script>
 
-<style>
-  .legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: #475569;
-    letter-spacing: 0.03em;
-  }
-  .legend-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .dot-earned {
-    background: #34d399;
-  }
-  .dot-pro-dev {
-    background: #f59e0b;
-  }
-  .dot-in-progress {
-    background: #60a5fa;
-    box-shadow: 0 0 6px rgba(96, 165, 250, 0.6);
+<style is:global>
+  /* Carousel Viewport */
+  .certs-carousel-viewport {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 0.25rem 0.25rem 0.25rem;
   }
 
-  .cert-badge {
+  .certs-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+    align-items: stretch;
+  }
+
+  .cert-page-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 0.25rem;
+  }
+
+  /* Certificate Card (Sketch 3 layout: Foto arriba, nombre, descripción breve) */
+  .cert-card-v {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition:
+      transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .cert-card-v:hover,
+  .cert-card-v.active-highlight {
+    transform: translateY(-6px);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow:
+      0 16px 40px -10px rgba(0, 0, 0, 0.5),
+      0 0 25px -5px rgba(99, 102, 241, 0.2);
+  }
+
+  .cert-card-v:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* Photo on Top */
+  .cert-card-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #020617;
+  }
+
+  .cert-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .cert-card-v:hover .cert-card-img {
+    transform: scale(1.05);
+  }
+
+  .cert-card-media-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .cert-card-v:hover .cert-card-media-overlay {
+    opacity: 1;
+  }
+
+  .cert-card-zoom-hint {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(99, 102, 241, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 9999px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    white-space: nowrap;
-    flex-shrink: 0;
-    border: 1px solid;
+    padding: 0.35rem 0.85rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(6px);
+    transition: transform 0.3s ease;
   }
 
-  .badge-earned {
-    background: rgba(16, 185, 129, 0.12);
-    color: #6ee7b7;
-    border-color: rgba(16, 185, 129, 0.25);
+  .cert-card-v:hover .cert-card-zoom-hint {
+    transform: translateY(0);
   }
 
-  .badge-pro-dev {
-    background: rgba(245, 158, 11, 0.12);
-    color: #fcd34d;
-    border-color: rgba(245, 158, 11, 0.25);
+  /* Body */
+  .cert-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.25rem;
   }
 
-  .badge-in-progress {
-    background: rgba(96, 165, 250, 0.12);
-    color: #93c5fd;
-    border-color: rgba(96, 165, 250, 0.3);
+
+  .cert-card-title {
+    color: var(--text);
+    transition: color 0.25s ease;
+  }
+  .cert-card-v:hover .cert-card-title {
+    color: var(--accent);
   }
 
-  .badge-pulse-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #60a5fa;
-    flex-shrink: 0;
-    will-change: transform, opacity;
-  }
-  @keyframes badge-dot-pulse {
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.4;
-      transform: scale(0.7);
-    }
+  .cert-card-desc {
+    color: var(--text-muted);
   }
 
-  .issuer-tag {
-    display: inline-block;
-    margin-left: 0.4rem;
-    padding: 0.1rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.6rem;
+  .cert-card-footer {
+    border-top: 1px solid var(--border);
+  }
+
+  .cert-issuer-badge {
+    font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.08em;
-    background: rgba(245, 158, 11, 0.1);
-    border: 1px solid rgba(245, 158, 11, 0.2);
-    color: #fbbf24;
-    vertical-align: middle;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 9999px;
+    padding: 0.2rem 0.65rem;
+    line-height: 1.2;
   }
 
-  .cert-pro-dev {
-    border-color: rgba(245, 158, 11, 0.12);
-  }
-  .cert-pro-dev:hover {
-    border-color: rgba(245, 158, 11, 0.35) !important;
-    box-shadow: 0 8px 40px rgba(245, 158, 11, 0.08) !important;
+  .cert-date-text {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-dimmer);
+    font-family: ui-monospace, monospace;
   }
 
-  .cert-in-progress {
-    border: 1px dashed rgba(96, 165, 250, 0.35);
-    background: rgba(15, 23, 42, 0.6);
+  .cert-skill-tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    border-radius: 9999px;
+    padding: 0.2rem 0.6rem;
+    line-height: 1.2;
+    transition: all 0.2s ease;
   }
-  .cert-in-progress:hover {
-    border-color: rgba(96, 165, 250, 0.65) !important;
-    box-shadow:
-      0 8px 40px rgba(96, 165, 250, 0.12),
-      0 0 0 1px rgba(96, 165, 250, 0.15) !important;
+  .cert-skill-tag:hover {
+    color: #ffffff;
+    background: rgba(99, 102, 241, 0.22);
+    border-color: rgba(99, 102, 241, 0.5);
   }
-  .in-progress-label {
+  .cert-skill-tag.text-accent {
+    color: #c7d2fe;
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.45);
+  }
+
+  /* Pagination Bar (Sketch 3: [1] [2] [3] -> [2] [3] [4]) */
+  .certs-pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .cert-nav-arrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #60a5fa;
-    opacity: 0.8;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 0.65rem;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.25s ease;
   }
-  .ip-pulse {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
+  .cert-nav-arrow:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: rgba(99, 102, 241, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .cert-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 0.65rem;
+    font-family: ui-monospace, monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .cert-page-btn:hover {
+    color: var(--text);
+    border-color: rgba(99, 102, 241, 0.4);
+    background: rgba(99, 102, 241, 0.08);
+  }
+  .cert-page-btn.active {
+    color: #ffffff;
+    background: rgba(99, 102, 241, 0.25);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px -2px rgba(99, 102, 241, 0.4);
+  }
+
+  /* Modal Dialog (Sketch 3: "al hacer click aparece el certificado oficial en pantalla") */
+  .cert-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(2, 6, 23, 0.86);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+  .cert-modal-backdrop[hidden] {
+    display: none !important;
+  }
+  .cert-modal-backdrop.modal-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .cert-modal-backdrop.modal-closing {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cert-modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 1140px;
+    background: #0b1120;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-radius: 1.5rem;
+    box-shadow:
+      0 25px 60px -15px rgba(0, 0, 0, 0.8),
+      0 0 40px -10px rgba(99, 102, 241, 0.25);
+    overflow: hidden;
+    transform: scale(0.96);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .cert-modal-backdrop.modal-open .cert-modal-container {
+    transform: scale(1);
+  }
+
+  .cert-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: #60a5fa;
-    animation: badge-dot-pulse 1.6s ease-in-out infinite;
-    flex-shrink: 0;
-    will-change: transform, opacity;
+    color: #94a3b8;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .cert-modal-close:hover {
+    color: #ffffff;
+    background: rgba(30, 41, 59, 0.9);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.08);
+  }
+
+  .cert-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 860px) {
+    .cert-modal-grid {
+      grid-template-columns: 1.35fr 1fr;
+    }
+  }
+
+  .cert-modal-image-wrap {
+    position: relative;
+    background: #020617;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.75rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  }
+  @media (min-width: 860px) {
+    .cert-modal-image-wrap {
+      border-bottom: none;
+      border-right: 1px solid rgba(148, 163, 184, 0.12);
+      padding: 2.25rem;
+    }
+  }
+
+  .cert-modal-img {
+    width: 100%;
+    max-height: 560px;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .cert-modal-content {
+    padding: 2.25rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cert-modal-skill-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    border-radius: 9999px;
+    padding: 0.3rem 0.75rem;
+    line-height: 1.2;
+    transition: all 0.2s ease;
+  }
+  .cert-modal-skill-tag:hover {
+    color: #ffffff;
+    background: rgba(99, 102, 241, 0.22);
+    border-color: rgba(99, 102, 241, 0.5);
+  }
+
+  .cert-verify-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0.85rem 1.25rem;
+    border-radius: 0.75rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+  }
+  .cert-verify-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .cert-view-full-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.25rem;
+    border-radius: 0.75rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+  }
+  .cert-view-full-btn:hover {
+    background: rgba(51, 65, 85, 0.95);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* Light Theme */
+  [data-theme='light'] .cert-card-v {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  }
+  [data-theme='light'] .cert-card-v:hover {
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow:
+      0 16px 40px -10px rgba(99, 102, 241, 0.15),
+      0 0 25px -5px rgba(99, 102, 241, 0.2);
+  }
+  [data-theme='light'] .cert-card-title {
+    color: var(--text);
+  }
+  [data-theme='light'] .cert-card-v:hover .cert-card-title {
+    color: var(--accent);
+  }
+  [data-theme='light'] .cert-card-desc {
+    color: var(--text-muted);
+  }
+  [data-theme='light'] .cert-issuer-badge {
+    color: #4f46e5;
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.25);
+  }
+  [data-theme='light'] .cert-date-text {
+    color: var(--text-dim);
+  }
+  [data-theme='light'] .cert-skill-tag {
+    color: #4338ca !important;
+    background: rgba(67, 56, 202, 0.08) !important;
+    border: 1px solid rgba(67, 56, 202, 0.25) !important;
+  }
+  [data-theme='light'] .cert-skill-tag.text-accent {
+    color: #4f46e5 !important;
+    background: rgba(99, 102, 241, 0.14) !important;
+    border-color: rgba(99, 102, 241, 0.35) !important;
+  }
+  [data-theme='light'] .cert-page-btn,
+  [data-theme='light'] .cert-nav-arrow {
+    background: var(--bg-card);
+    border-color: var(--border);
+    color: var(--text-dim);
+  }
+  [data-theme='light'] .cert-page-btn:hover,
+  [data-theme='light'] .cert-nav-arrow:hover {
+    background: var(--bg-card-solid);
+    border-color: var(--border-hover);
+    color: var(--text);
+  }
+  [data-theme='light'] .cert-page-btn.active {
+    background: rgba(99, 102, 241, 0.12);
+    border-color: rgba(99, 102, 241, 0.4);
+    color: var(--accent);
+    box-shadow: 0 2px 10px rgba(79, 70, 229, 0.2);
+  }
+  [data-theme='light'] .cert-modal-backdrop {
+    background: rgba(241, 245, 249, 0.88);
+  }
+  [data-theme='light'] .cert-modal-container {
+    background: var(--bg-overlay);
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(109, 40, 217, 0.1);
+  }
+  [data-theme='light'] #cert-modal-title {
+    color: var(--text);
+  }
+  [data-theme='light'] #cert-modal-desc {
+    color: var(--text-muted);
+  }
+  [data-theme='light'] .cert-modal-image-wrap {
+    background: var(--bg-section);
+    border-color: var(--border);
+  }
+  [data-theme='light'] .cert-modal-skill-tag {
+    color: #4338ca;
+    background: rgba(67, 56, 202, 0.08);
+    border: 1px solid rgba(67, 56, 202, 0.25);
+  }
+  [data-theme='light'] .cert-modal-close {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #64748b;
+  }
+  [data-theme='light'] .cert-modal-close:hover {
+    background: rgba(109, 40, 217, 0.15);
+    color: #6d28d9;
+  }
+  [data-theme='light'] .cert-view-full-btn {
+    background: var(--bg-card);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  [data-theme='light'] .cert-view-full-btn:hover {
+    background: var(--bg-card-solid);
+    border-color: var(--accent);
+  }
+  [data-theme='light'] #cert-modal-id-wrap {
+    background: var(--bg-section);
+    border-color: var(--border);
   }
 </style>
