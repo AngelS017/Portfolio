@@ -1,0 +1,102 @@
+[
+  {
+    "id": "pytorch-deeplearning-ai",
+    "name": "PyTorch for Deep Learning",
+    "issuer": "DeepLearning.AI",
+    "date": "January 2026",
+    "hours": "88 hours",
+    "status": "Earned",
+    "credentialId": "039c74d2-17ae-47c2-8e90-4c3c3182a877",
+    "type": "certification",
+    "description": "Official certification issued by DeepLearning.AI covering layer design, architecture construction, and training optimization of deep neural networks using PyTorch.",
+    "skills": [
+      "PyTorch",
+      "Deep Learning",
+      "Neural Networks",
+      "Tensors",
+      "Optimization"
+    ],
+    "credentialUrl": "https://learn.deeplearning.ai/certificates/039c74d2-17ae-47c2-8e90-4c3c3182a877",
+    "image": "/images/certifications/Cert_PytorchForDeepLearning.png"
+  },
+  {
+    "id": "cambridge-c1-advanced",
+    "name": "C1-Advanced",
+    "issuer": "Cambridge English",
+    "date": "October 2021",
+    "hours": "C1 Level (Score: 182)",
+    "status": "Earned",
+    "credentialId": "B6532491 17/07/2000",
+    "type": "certification",
+    "description": "Official international advanced English language certification (Certificate in Advanced English - CAE) awarded by Cambridge Assessment English with a score of 182.",
+    "skills": [
+      "English C1",
+      "Technical English",
+      "Academic Writing",
+      "Communication"
+    ],
+    "credentialUrl": "https://www.cambridgeenglish.org/verifiers",
+    "image": "/images/certifications/Cert_English_AdvancedC1.jpg"
+  },
+  {
+    "id": "deeplearning-ai-specialization",
+    "name": "Deep Learning Specialization",
+    "issuer": "Coursera / DeepLearning.AI",
+    "date": "November 2024",
+    "hours": "160 hours",
+    "status": "Earned",
+    "credentialId": "0H0UKSOMIIVX",
+    "type": "certification",
+    "description": "Comprehensive 5-course specialization taught by DeepLearning.AI on Coursera. Deep neural networks, hyperparameter tuning, Convolutional Networks (CNNs), and Sequence Models / Transformers.",
+    "skills": [
+      "Deep Learning",
+      "PyTorch",
+      "CNNs",
+      "Transformers",
+      "NLP",
+      "Computer Vision"
+    ],
+    "credentialUrl": "https://coursera.org/verify/specialization/0H0UKSOMIIVX",
+    "image": "/images/certifications/Cert_DeepLearningSpecialization.jpg"
+  },
+  {
+    "id": "azure-ai-fundamentals",
+    "name": "AI-900: Microsoft Azure AI Fundamentals",
+    "issuer": "Microsoft",
+    "date": "May 2024",
+    "hours": "31 hours",
+    "status": "Earned",
+    "credentialId": "vo4o-uTCL",
+    "type": "certification",
+    "description": "Official Microsoft credential validating foundational knowledge of Artificial Intelligence and Machine Learning in the Azure cloud: computer vision, NLP, conversational AI, and responsible AI principles.",
+    "skills": [
+      "Azure AI",
+      "Machine Learning",
+      "Cloud AI",
+      "Computer Vision",
+      "NLP"
+    ],
+    "credentialUrl": "https://verify.certiport.com",
+    "image": "/images/certifications/Cert_AzureAIFundamentals.jpg"
+  },
+  {
+    "id": "ibm-neural-networks-pytorch",
+    "name": "Introduction to Neural Networks and PyTorch by IBM",
+    "issuer": "Coursera / IBM",
+    "date": "June 2023",
+    "hours": "31 hours",
+    "status": "Earned",
+    "credentialId": "TYUDNFMT6VTQ",
+    "type": "certification",
+    "description": "Technical certification covering the design, construction, and training of neural networks with PyTorch: tensors, autograd, linear/non-linear classifiers, and CNN architectures.",
+    "skills": [
+      "PyTorch",
+      "IBM Skills Network",
+      "Deep Learning",
+      "Neural Networks",
+      "CNN"
+    ],
+    "credentialUrl": "https://coursera.org/verify/TYUDNFMT6VTQ",
+    "image": "/images/certifications/Cert_DeepNeuralNetworksWithPytorch.jpg"
+  }
+]

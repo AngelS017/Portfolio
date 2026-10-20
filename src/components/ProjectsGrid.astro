@@ -1,13 +1,23 @@
 ---
-import projectsFile from '../data/projects.json';
-import personalData from '../data/personal.json';
+import {
+  getProjectsData,
+  getPersonalData,
+  useTranslations,
+  type Locale,
+  DEFAULT_LOCALE,
+} from '../lib/i18n';
 import { augmentProjectsWithImages, type ProjectEntry } from '../lib/fetchGitHub';
 import { withBase } from '../lib/assetPath';
 
 interface Props {
   featuredOnly?: boolean;
+  lang?: Locale;
 }
-const { featuredOnly = false } = Astro.props;
+const { featuredOnly = false, lang = DEFAULT_LOCALE } = Astro.props;
+
+const projectsFile = getProjectsData(lang);
+const personalData = getPersonalData(lang);
+const t = useTranslations(lang);
 
 const allProjectsData = await augmentProjectsWithImages(projectsFile.items as ProjectEntry[]);
 const displayProjects = featuredOnly
@@ -20,8 +30,8 @@ const categoryFilters = [...new Set(allProjectsData.map((p) => p.category))].map
 }));
 
 const filters = [
-  { label: 'Destacados', value: 'featured' },
-  { label: 'Todos', value: 'all' },
+  { label: t.filterFeatured, value: 'featured' },
+  { label: t.filterAll, value: 'all' },
   ...categoryFilters,
 ];
 
@@ -58,8 +68,8 @@ const projectsJson = JSON.stringify(
 <section id="projects" class="pt-6 pb-20 sm:pt-8 sm:pb-24" style="background: var(--bg-section); scroll-margin-top: 64px;">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-8 sm:mb-10 reveal">
-      <p class="text-sm font-semibold tracking-widest text-highlight uppercase mb-2">Mi trabajo · Proyectos</p>
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold section-title">Portfolio</h2>
+      <p class="text-sm font-semibold tracking-widest text-highlight uppercase mb-2">{t.projectsEyebrow}</p>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold section-title">{t.projectsTitle}</h2>
     </div>
 
     <div class="max-w-6xl mx-auto flex flex-wrap justify-center gap-2 mb-8 reveal" style="transition-delay:0.1s;">
@@ -92,7 +102,7 @@ const projectsJson = JSON.stringify(
               style={`transition-delay: ${(i % 3) * 0.08}s;`}
               role="button"
               tabindex="0"
-              aria-label={`Ver detalles de ${project.title}`}
+              aria-label={`${t.viewDetailsAria} ${project.title}`}
             >
               <!-- Left: Project Photo -->
               <div class="project-card-h-media">
@@ -125,8 +135,8 @@ const projectsJson = JSON.stringify(
                     target="_blank"
                     rel="noopener noreferrer"
                     class="project-github-btn shrink-0"
-                    aria-label={`Ver código de ${project.title} en GitHub`}
-                    title="Ver repositorio en GitHub"
+                    aria-label={`${t.viewCodeAria} ${project.title}`}
+                    title={t.viewRepoTitle}
                   >
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
@@ -153,7 +163,7 @@ const projectsJson = JSON.stringify(
     </div>
 
     <p id="projects-empty" class="hidden text-center text-slate-600 text-sm mt-12">
-      No hay proyectos en esta categoría todavía.
+      {t.projectsEmpty}
     </p>
   </div>
 </section>
@@ -167,7 +177,7 @@ const projectsJson = JSON.stringify(
   hidden
 >
   <div class="modal-container" id="modal-container">
-    <button class="modal-close" id="modal-close" aria-label="Cerrar modal">
+    <button class="modal-close" id="modal-close" aria-label={t.modalClose}>
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
         <path
           stroke-linecap="round"
@@ -190,7 +200,7 @@ const projectsJson = JSON.stringify(
         <h2 id="modal-title" class="modal-heading mb-3"></h2>
         <p id="modal-description" class="modal-description mb-4"></p>
 
-        <h4 class="text-xs font-bold text-highlight uppercase tracking-wider mb-2">Tecnologías</h4>
+        <h4 class="text-xs font-bold text-highlight uppercase tracking-wider mb-2">{t.modalTech}</h4>
         <div id="modal-tags" class="modal-tags mb-6"></div>
 
         <div class="modal-cta-wrap">
@@ -198,7 +208,7 @@ const projectsJson = JSON.stringify(
             <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
             </svg>
-            <span id="modal-link-text">Ver en GitHub</span>
+            <span id="modal-link-text">{t.modalGithub}</span>
             <svg class="modal-cta-arrow ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -208,7 +218,7 @@ const projectsJson = JSON.stringify(
               ></path>
             </svg>
           </a>
-          <p id="modal-no-link" class="modal-no-link hidden">Privado / Sin enlace público disponible.</p>
+          <p id="modal-no-link" class="modal-no-link hidden">{t.modalPrivate}</p>
         </div>
       </div>
     </div>
@@ -218,7 +228,7 @@ const projectsJson = JSON.stringify(
 <!-- define:vars injects the server-rendered JSON blob as a JS variable in this inline script.
      is:inline is required alongside define:vars; without it Astro would bundle the script
      and the injected variable would not be in scope. -->
-<script is:inline define:vars={{ projectsJson }}>
+<script is:inline define:vars={{ projectsJson, gitHubLabel: t.modalGithub, viewProjectLabel: lang === 'es' ? 'Ver Proyecto' : 'View Project' }}>
   // @ts-nocheck
   const projects = JSON.parse(projectsJson);
 
@@ -326,7 +336,7 @@ const projectsJson = JSON.stringify(
     const targetUrl = p.gitHubUrl || p.link;
     if (targetUrl) {
       modalLink.href = targetUrl;
-      modalLinkTx.textContent = targetUrl.includes('github.com') ? 'Ver en GitHub' : 'Ver Proyecto';
+      modalLinkTx.textContent = targetUrl.includes('github.com') ? gitHubLabel : viewProjectLabel;
       modalLink.classList.remove('hidden');
       modalNoLink.classList.add('hidden');
     } else {
@@ -407,8 +417,8 @@ const projectsJson = JSON.stringify(
   }
   .filter-btn.filter-active {
     color: var(--accent);
-    background: rgba(99, 102, 241, 0.1);
-    border-color: rgba(99, 102, 241, 0.4);
+    background: rgba(0, 229, 255, 0.1);
+    border-color: rgba(0, 229, 255, 0.35);
   }
   .filter-count {
     font-size: 0.65rem;
@@ -425,7 +435,7 @@ const projectsJson = JSON.stringify(
   }
   .filter-btn.filter-active .filter-count {
     color: var(--accent);
-    background: rgba(99, 102, 241, 0.15);
+    background: rgba(0, 229, 255, 0.18);
   }
 
   /* Scrollable Container */
@@ -435,7 +445,7 @@ const projectsJson = JSON.stringify(
     overflow-x: hidden;
     padding: 0.5rem 0.5rem 1rem;
     scrollbar-width: thin;
-    scrollbar-color: rgba(99, 102, 241, 0.45) rgba(15, 23, 42, 0.4);
+    scrollbar-color: rgba(0, 229, 255, 0.35) rgba(15, 23, 42, 0.4);
   }
 
   .projects-scroll-container::-webkit-scrollbar {
@@ -446,11 +456,11 @@ const projectsJson = JSON.stringify(
     border-radius: 9999px;
   }
   .projects-scroll-container::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.45);
+    background: rgba(0, 229, 255, 0.35);
     border-radius: 9999px;
   }
   .projects-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(99, 102, 241, 0.75);
+    background: rgba(0, 229, 255, 0.65);
   }
 
   /* Horizontal Project Card */
@@ -481,10 +491,10 @@ const projectsJson = JSON.stringify(
 
   .project-card-h:hover {
     transform: translateY(-4px) scale(1.008);
-    border-color: rgba(99, 102, 241, 0.45);
+    border-color: rgba(0, 229, 255, 0.4);
     box-shadow:
       0 16px 40px -12px rgba(0, 0, 0, 0.5),
-      0 0 30px -6px rgba(99, 102, 241, 0.2);
+      0 0 30px -6px rgba(0, 229, 255, 0.2);
   }
 
   .project-card-h:focus-visible {
@@ -643,8 +653,8 @@ const projectsJson = JSON.stringify(
   [data-theme='light'] .project-github-btn:hover {
     color: #0f172a;
     background: #ffffff;
-    border-color: #6366f1;
-    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.2);
+    border-color: #0284c7;
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.2);
   }
 
   .project-category-badge {
@@ -652,37 +662,48 @@ const projectsJson = JSON.stringify(
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.28);
+    color: #38bdf8;
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.28);
     border-radius: 9999px;
     padding: 0.18rem 0.55rem;
     line-height: 1.2;
     transition: all 0.25s ease;
   }
   .project-card-h:hover .project-category-badge {
-    background: rgba(99, 102, 241, 0.25);
-    border-color: rgba(99, 102, 241, 0.55);
+    background: rgba(0, 229, 255, 0.22);
+    border-color: rgba(0, 229, 255, 0.55);
     color: #ffffff;
   }
   [data-theme='light'] .project-category-badge {
-    color: #4f46e5;
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.25);
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
   }
   [data-theme='light'] .project-card-h:hover .project-category-badge {
-    color: #4338ca;
-    background: rgba(99, 102, 241, 0.16);
-    border-color: rgba(99, 102, 241, 0.45);
+    color: #0369a1;
+    background: rgba(2, 132, 199, 0.16);
+    border-color: rgba(2, 132, 199, 0.45);
+  }
+
+  [data-theme='light'] .filter-btn.filter-active {
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.1);
+    border-color: rgba(2, 132, 199, 0.4);
+  }
+  [data-theme='light'] .filter-btn.filter-active .filter-count {
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.18);
   }
 
   [data-theme='light'] .project-card-h {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   }
   [data-theme='light'] .project-card-h:hover {
+    border-color: rgba(2, 132, 199, 0.45);
     box-shadow:
       0 16px 40px -12px rgba(0, 0, 0, 0.08),
-      0 0 25px -5px rgba(99, 102, 241, 0.15);
+      0 0 25px -5px rgba(2, 132, 199, 0.15);
   }
 
   .project-card-h-bottom {
@@ -732,7 +753,7 @@ const projectsJson = JSON.stringify(
     border-radius: 1.25rem;
     box-shadow:
       0 32px 80px rgba(0, 0, 0, 0.55),
-      0 0 0 1px rgba(99, 102, 241, 0.1),
+      0 0 0 1px rgba(0, 229, 255, 0.15),
       inset 0 1px 0 rgba(255, 255, 255, 0.06);
     overflow: hidden;
     transform: translateY(28px) scale(0.97);
@@ -789,7 +810,7 @@ const projectsJson = JSON.stringify(
       transform 0.25s ease;
   }
   .modal-close:hover {
-    background: rgba(99, 102, 241, 0.25);
+    background: rgba(0, 229, 255, 0.2);
     color: #fff;
     transform: rotate(90deg);
   }
@@ -829,9 +850,9 @@ const projectsJson = JSON.stringify(
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.25);
+    color: #38bdf8;
+    background: rgba(0, 229, 255, 0.12);
+    border: 1px solid rgba(0, 229, 255, 0.28);
     border-radius: 9999px;
     padding: 0.2rem 0.65rem;
     margin-bottom: 0.6rem;
@@ -944,7 +965,7 @@ const projectsJson = JSON.stringify(
   [data-theme='light'] .modal-container {
     box-shadow:
       0 24px 60px rgba(0, 0, 0, 0.14),
-      0 0 0 1px rgba(109, 40, 217, 0.1);
+      0 0 0 1px rgba(2, 132, 199, 0.15);
   }
   [data-theme='light'] .modal-close {
     background: rgba(255, 255, 255, 0.7);
@@ -952,8 +973,8 @@ const projectsJson = JSON.stringify(
     color: #64748b;
   }
   [data-theme='light'] .modal-close:hover {
-    background: rgba(109, 40, 217, 0.15);
-    color: #6d28d9;
+    background: rgba(2, 132, 199, 0.15);
+    color: #0284c7;
   }
   [data-theme='light'] .modal-hero {
     background-color: #e2e8f0;
@@ -965,9 +986,9 @@ const projectsJson = JSON.stringify(
     color: #0f172a;
   }
   [data-theme='light'] .modal-cat-badge {
-    color: #4f46e5;
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.25);
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
   }
   [data-theme='light'] .modal-heading {
     color: var(--text);

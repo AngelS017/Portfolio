@@ -205,7 +205,9 @@ async function ensureProjectImages() {
   if (!githubUser) return;
 
   const dataDir = join(ROOT, 'src', 'data');
-  const projectsPath = join(dataDir, 'projects.json');
+  const projectsPath = existsSync(join(dataDir, 'es', 'projects.json'))
+    ? join(dataDir, 'es', 'projects.json')
+    : join(dataDir, 'projects.json');
   if (!existsSync(projectsPath)) return;
 
   const projectsJson = JSON.parse(readFileSync(projectsPath, 'utf8'));

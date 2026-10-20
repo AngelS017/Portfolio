@@ -1,0 +1,51 @@
+{
+  "title": "Ángel Sanz Gutiérrez | Machine Learning & AI Portfolio",
+  "description": "Portfolio of Ángel Sanz Gutiérrez — Machine Learning / AI Engineer. AI projects, reinforcement learning models, deep learning, and intelligent solutions.",
+  "ogSiteName": "Ángel Sanz Gutiérrez Portfolio",
+  "shortName": "ASG",
+  "tagline": "Machine Learning & AI Engineer · Building Intelligent Solutions",
+  "themeStorageKey": "portfolio-theme",
+  "web3formsKey": "YOUR_WEB3FORMS_KEY_HERE",
+  "footerAttribution": {
+    "builder": "Marcus Holtz's template",
+    "builderUrl": "https://github.com/MarcusHoltz/astro-portfolio-theme",
+    "host": "Vercel",
+    "hostUrl": "https://vercel.com"
+  },
+  "seoKeywords": [
+    "Machine Learning Engineer",
+    "Artificial Intelligence",
+    "Reinforcement Learning",
+    "Deep Learning",
+    "Computer Vision",
+    "NLP",
+    "Data Science",
+    "Python",
+    "PyTorch",
+    "Tensorflow",
+    "Keras",
+    "Scikit-learn",
+    "Open to Work",
+    "Available for Projects"
+  ],
+  "navExternal": [
+    {
+      "label": "GitHub",
+      "desc": "Open-source projects and research code",
+      "personalKey": "github",
+      "urlTemplate": "https://github.com/{value}"
+    },
+    {
+      "label": "LinkedIn",
+      "desc": "Professional profile and background",
+      "personalKey": "linkedin",
+      "urlTemplate": "https://linkedin.com/in/{value}"
+    },
+    {
+      "label": "Email",
+      "desc": "Direct contact for inquiries and collaborations",
+      "personalKey": "email",
+      "urlTemplate": "mailto:{value}"
+    }
+  ]
+}

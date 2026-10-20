@@ -1,5 +1,13 @@
 ---
 import ProjectsGrid from './ProjectsGrid.astro';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang } = Astro.props;
 ---
 
-<ProjectsGrid />
+<ProjectsGrid lang={lang} />
+

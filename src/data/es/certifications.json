@@ -9,7 +9,13 @@
     "credentialId": "039c74d2-17ae-47c2-8e90-4c3c3182a877",
     "type": "certification",
     "description": "Certificación oficial emitida por DeepLearning.AI en desarrollo, diseño de capas y optimización de redes neuronales profundas con PyTorch.",
-    "skills": ["PyTorch", "Deep Learning", "Neural Networks", "Tensors", "Optimization"],
+    "skills": [
+      "PyTorch",
+      "Deep Learning",
+      "Neural Networks",
+      "Tensors",
+      "Optimization"
+    ],
     "credentialUrl": "https://learn.deeplearning.ai/certificates/039c74d2-17ae-47c2-8e90-4c3c3182a877",
     "image": "/images/certifications/Cert_PytorchForDeepLearning.png"
   },
@@ -23,7 +29,12 @@
     "credentialId": "B6532491 17/07/2000",
     "type": "certification",
     "description": "Certificación oficial internacional de nivel avanzado en lengua inglesa (Certificate in Advanced English - CAE) por Cambridge Assessment English con score de 182.",
-    "skills": ["English C1", "Technical English", "Academic Writing", "Communication"],
+    "skills": [
+      "English C1",
+      "Technical English",
+      "Academic Writing",
+      "Communication"
+    ],
     "credentialUrl": "https://www.cambridgeenglish.org/verifiers",
     "image": "/images/certifications/Cert_English_AdvancedC1.jpg"
   },
@@ -37,7 +48,14 @@
     "credentialId": "0H0UKSOMIIVX",
     "type": "certification",
     "description": "Especialización integral de 5 cursos impartida por DeepLearning.AI en Coursera. Redes neuronales profundas, optimización de hiperparámetros, redes convolucionales (CNN) y Transformers / NLP.",
-    "skills": ["Deep Learning", "PyTorch", "CNNs", "Transformers", "NLP", "Computer Vision"],
+    "skills": [
+      "Deep Learning",
+      "PyTorch",
+      "CNNs",
+      "Transformers",
+      "NLP",
+      "Computer Vision"
+    ],
     "credentialUrl": "https://coursera.org/verify/specialization/0H0UKSOMIIVX",
     "image": "/images/certifications/Cert_DeepLearningSpecialization.jpg"
   },
@@ -51,7 +69,13 @@
     "credentialId": "vo4o-uTCL",
     "type": "certification",
     "description": "Certificación oficial de Microsoft sobre fundamentos de Inteligencia Artificial y Machine Learning en la nube de Azure: computer vision, NLP, conversational AI y principios éticos de IA.",
-    "skills": ["Azure AI", "Machine Learning", "Cloud AI", "Computer Vision", "NLP"],
+    "skills": [
+      "Azure AI",
+      "Machine Learning",
+      "Cloud AI",
+      "Computer Vision",
+      "NLP"
+    ],
     "credentialUrl": "https://verify.certiport.com",
     "image": "/images/certifications/Cert_AzureAIFundamentals.jpg"
   },
@@ -65,7 +89,13 @@
     "credentialId": "TYUDNFMT6VTQ",
     "type": "certification",
     "description": "Certificación técnica en diseño, construcción y entrenamiento de redes neuronales con PyTorch: tensores, autograd, clasificadores lineales/no lineales y arquitecturas CNN.",
-    "skills": ["PyTorch", "IBM Skills Network", "Deep Learning", "Neural Networks", "CNN"],
+    "skills": [
+      "PyTorch",
+      "IBM Skills Network",
+      "Deep Learning",
+      "Neural Networks",
+      "CNN"
+    ],
     "credentialUrl": "https://coursera.org/verify/TYUDNFMT6VTQ",
     "image": "/images/certifications/Cert_DeepNeuralNetworksWithPytorch.jpg"
   }

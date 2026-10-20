@@ -1,0 +1,65 @@
+{
+  "layout": "grid",
+  "items": [
+    {
+      "title": "Microgrid Management with Reinforcement Learning",
+      "featured": true,
+      "company": "B.Sc. Thesis · Computer Science (UPNA)",
+      "category": "Reinforcement Learning",
+      "description": "Intelligent energy optimization and microgrid management using Deep Reinforcement Learning algorithms (DQN and PPO).",
+      "fullDescription": "Comparative experimental study on intelligent energy management and optimization in electrical microgrids using Deep Reinforcement Learning algorithms (Deep Q-Network - DQN and Proximal Policy Optimization - PPO) versus rule-based controllers (RBC). Implemented with PyTorch and the Pymgrid simulator.",
+      "tags": ["Reinforcement Learning", "PyTorch", "DQN", "PPO", "Smart Grids", "Pymgrid", "Python"],
+      "backgroundImage": "/images/projects/TFG_RL_MicroGrid.png",
+      "link": "https://github.com/AngelS017/TFG_RL_MicroGrid",
+      "githubRepo": "TFG_RL_MicroGrid"
+    },
+    {
+      "title": "Artificial Bee Colony (ABC) for TSP",
+      "featured": true,
+      "company": "Optimization & Metaheuristics",
+      "category": "Metaheuristics",
+      "description": "Optimization of the Traveling Salesperson Problem (TSP) using the bio-inspired Artificial Bee Colony (ABC) algorithm.",
+      "fullDescription": "Modular implementation and comparative benchmark of the bio-inspired Artificial Bee Colony algorithm applied to the Traveling Salesperson Problem (TSP) on an empirical Luxembourg dataset instance. Includes mutation operator evaluation (swap, insertion, k-opt) and convergence analysis.",
+      "tags": ["Metaheuristics", "Swarm Intelligence", "TSP", "Optimization", "Genetic Algorithms", "Python"],
+      "backgroundImage": "/images/projects/ABC_algorithm_for_TSP.jpg",
+      "link": "https://github.com/AngelS017/ABC-algorithm-for-TSP",
+      "githubRepo": "ABC-algorithm-for-TSP"
+    },
+    {
+      "title": "Semantic Segmentation for Autonomous Driving",
+      "featured": true,
+      "company": "Deep Learning / Computer Vision",
+      "category": "Computer Vision",
+      "description": "Real-time semantic segmentation for autonomous vehicles on Cityscapes using U-Net and TensorRT GPU acceleration.",
+      "fullDescription": "End-to-end real-time semantic segmentation pipeline for autonomous driving on the Cityscapes benchmark. Implements a U-Net architecture with a pretrained ResNet-34 encoder (transfer learning, gradual unfreezing, mIoU 0.6279), Bayesian hyperparameter optimization with Optuna, Gaussian tiling for high-resolution inference (1024×2048), and accelerated deployment with ONNX Runtime and TensorRT FP16.",
+      "tags": ["PyTorch Lightning", "ResNet-34", "U-Net", "Optuna", "TensorRT", "ONNX", "Cityscapes"],
+      "backgroundImage": "/images/projects/SemanticSegmentation_AutonomousDriving.png",
+      "link": "https://github.com/AngelS017/SemanticSegmentation_AutonomousDriving",
+      "githubRepo": "SemanticSegmentation_AutonomousDriving"
+    },
+    {
+      "title": "Amazon Reviews Rating Prediction",
+      "featured": false,
+      "company": "NLP & Machine Learning",
+      "category": "NLP",
+      "description": "Sentiment analysis and rating prediction on Amazon product reviews using Natural Language Processing (NLP).",
+      "fullDescription": "Classification and sentiment analysis pipeline applied to Amazon customer product reviews. Features advanced NLP preprocessing (lemmatization, emoji parsing, TF-IDF vectorization) and performance benchmarking across supervised learning models (Logistic Regression, Naive Bayes, and KNN).",
+      "tags": ["NLP", "Scikit-Learn", "Sentiment Analysis", "TF-IDF", "Classification", "Python"],
+      "backgroundImage": "/images/projects/Amazon_Review_Prediction.png",
+      "link": "https://github.com/AngelS017/Amazon_Review_Prediction",
+      "githubRepo": "Amazon_Review_Prediction"
+    },
+    {
+      "title": "KNN Student Pass/Fail Classifier in C",
+      "featured": false,
+      "company": "Algorithms & Systems",
+      "category": "Machine Learning",
+      "description": "K-Nearest Neighbors classifier built natively from scratch in pure C with low-level memory optimization to predict academic performance.",
+      "fullDescription": "From-scratch native implementation of the K-Nearest Neighbors (KNN) algorithm in pure C without external ML libraries. Features low-level dynamic memory management and Euclidean distance optimizations for student academic success prediction.",
+      "tags": ["C", "Machine Learning", "KNN", "Low-Level Optimization", "Algorithms"],
+      "backgroundImage": "/images/projects/KNN_Students_PassOrFailed.png",
+      "link": "https://github.com/AngelS017/KNN_Students_PassOrFailed",
+      "githubRepo": "KNN_Students_PassOrFailed"
+    }
+  ]
+}

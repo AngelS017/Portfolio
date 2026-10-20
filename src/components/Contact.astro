@@ -1,9 +1,28 @@
 ---
-import personalData from '../data/personal.json';
-import siteData from '../data/site.json';
+import {
+  getPersonalData,
+  getSiteData,
+  useTranslations,
+  type Locale,
+  DEFAULT_LOCALE,
+} from '../lib/i18n';
 import { getSocialLinks } from '../lib/socialLinks';
 
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = DEFAULT_LOCALE } = Astro.props;
+
+const personalData = getPersonalData(lang);
+const siteData = getSiteData(lang);
+const t = useTranslations(lang);
+
 const socialLinks = getSocialLinks(personalData as unknown as Record<string, string | string[]>);
+const web3formsAccessKey =
+  import.meta.env.WEB3FORMS_ACCESS_KEY ||
+  process.env.WEB3FORMS_ACCESS_KEY ||
+  siteData.web3formsKey;
 ---
 
 <section
@@ -15,9 +34,9 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-8 sm:mb-10 reveal">
         <p class="text-sm font-semibold tracking-widest text-highlight uppercase mb-2">
-          Contacto
+          {t.contactEyebrow}
         </p>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold section-title">Hablemos</h2>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold section-title">{t.contactTitle}</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -43,7 +62,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                 </svg>
               </div>
               <div>
-                <h3 class="contact-card-title font-semibold text-sm">Correo Electrónico</h3>
+                <h3 class="contact-card-title font-semibold text-sm">{t.cardEmail}</h3>
                 <a
                   href={`mailto:${personalData.email}`}
                   class="contact-card-link text-sm transition-colors"
@@ -80,7 +99,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                 </svg>
               </div>
               <div>
-                <h3 class="contact-card-title font-semibold text-sm">Ubicación</h3>
+                <h3 class="contact-card-title font-semibold text-sm">{t.cardLocation}</h3>
                 <p class="contact-card-text text-sm">{personalData.location}</p>
               </div>
             </div>
@@ -89,7 +108,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
           {
             socialLinks.length > 0 && (
               <div class="card">
-                <h3 class="contact-card-title font-semibold text-sm mb-4">También puedes encontrarme en:</h3>
+                <h3 class="contact-card-title font-semibold text-sm mb-4">{t.cardSocial}</h3>
                 <div class="flex flex-wrap gap-4">
                   {socialLinks.map((link) => (
                     <a
@@ -111,8 +130,15 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
         </div>
 
         <div class="card reveal" style="transition-delay: 0.2s;">
-          <form id="contact-form" class="space-y-4" novalidate>
-            <input type="hidden" name="access_key" value={siteData.web3formsKey} />
+          <form
+            id="contact-form"
+            class="space-y-4"
+            novalidate
+            data-sending={t.formSending}
+            data-success={t.formSuccess}
+            data-error={t.formError}
+          >
+            <input type="hidden" name="access_key" value={web3formsAccessKey} />
             <!-- Honeypot: hidden from users but bots fill it in.
                  Web3Forms rejects any submission where this field is checked. -->
             <input
@@ -127,7 +153,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                 <label
                   for="name"
                   class="contact-field-label block text-xs font-semibold uppercase tracking-wider mb-2"
-                  >Nombre</label
+                  >{t.formName}</label
                 >
                 <input
                   type="text"
@@ -136,14 +162,14 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                   autocomplete="name"
                   required
                   class="contact-form-input w-full rounded-lg px-4 py-3 text-sm transition-colors"
-                  placeholder="Tu nombre…"
+                  placeholder={t.formNamePlaceholder}
                 />
               </div>
               <div>
                 <label
                   for="email"
                   class="contact-field-label block text-xs font-semibold uppercase tracking-wider mb-2"
-                  >Correo electrónico</label
+                  >{t.formEmail}</label
                 >
                 <input
                   type="email"
@@ -154,7 +180,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                   spellcheck="false"
                   required
                   class="contact-form-input w-full rounded-lg px-4 py-3 text-sm transition-colors"
-                  placeholder="tu@correo.com"
+                  placeholder={lang === 'es' ? 'tu@correo.com' : 'your@email.com'}
                 />
               </div>
             </div>
@@ -163,7 +189,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
               <label
                 for="subject"
                 class="contact-field-label block text-xs font-semibold uppercase tracking-wider mb-2"
-                >Asunto</label
+                >{t.formSubject}</label
               >
               <input
                 type="text"
@@ -172,7 +198,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                 autocomplete="off"
                 required
                 class="contact-form-input w-full rounded-lg px-4 py-3 text-sm transition-colors"
-                placeholder="¿En qué te puedo ayudar?…"
+                placeholder={t.formSubjectPlaceholder}
               />
             </div>
 
@@ -180,7 +206,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
               <label
                 for="message"
                 class="contact-field-label block text-xs font-semibold uppercase tracking-wider mb-2"
-                >Mensaje</label
+                >{t.formMessage}</label
               >
               <textarea
                 id="message"
@@ -188,7 +214,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                 rows="5"
                 required
                 class="contact-form-input w-full rounded-lg px-4 py-3 text-sm transition-colors resize-none"
-                placeholder="Escribe tu mensaje aquí..."></textarea>
+                placeholder={t.formMessagePlaceholder}></textarea>
             </div>
 
             <div aria-live="polite" aria-atomic="true" id="form-status" class="sr-only"></div>
@@ -208,7 +234,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
                 ></path>
                 <path d="m21.854 2.147-10.94 10.939"></path>
               </svg>
-              Enviar Mensaje
+              {t.formSubmit}
             </button>
           </form>
         </div>
@@ -249,7 +275,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
     e.preventDefault();
     if (button) {
       button.disabled = true;
-      button.textContent = 'Enviando…';
+      button.textContent = form?.dataset.sending || 'Enviando…';
     }
     setStatus('', false);
 
@@ -260,13 +286,13 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
       });
       const data = (await res.json()) as { success?: boolean; message?: string };
       if (res.ok) {
-        setStatus("¡Mensaje enviado con éxito! Me pondré en contacto pronto.", false);
+        setStatus(form?.dataset.success || "¡Mensaje enviado con éxito!", false);
         form!.reset();
       } else {
-        setStatus(data.message ?? 'Algo salió mal. Por favor, inténtalo de nuevo.', true);
+        setStatus(data.message ?? (form?.dataset.error || 'Algo salió mal.'), true);
       }
     } catch {
-      setStatus('Error de conexión. Comprueba tu red e inténtalo de nuevo.', true);
+      setStatus(form?.dataset.error || 'Error de conexión. Inténtalo de nuevo.', true);
     } finally {
       if (button) {
         button.disabled = false;
@@ -278,8 +304,8 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
 
 <style is:global>
   .contact-icon-box {
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.25);
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.28);
   }
 
   .contact-card-title {
@@ -312,7 +338,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
   .contact-form-input:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35);
+    box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.35);
   }
 
   .contact-social-link {
@@ -335,9 +361,9 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
   }
   .contact-social-link:hover {
     color: #ffffff;
-    background: rgba(99, 102, 241, 0.15);
-    border-color: rgba(99, 102, 241, 0.5);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+    background: rgba(0, 229, 255, 0.15);
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.25);
     transform: translateY(-3px) scale(1.05);
   }
   .contact-social-link[data-platform="linkedin"]:hover {
@@ -352,8 +378,9 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
   }
 
   [data-theme='light'] .contact-icon-box {
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.22);
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
+    color: #0284c7;
   }
   [data-theme='light'] .contact-social-link {
     color: #475569;
@@ -364,8 +391,8 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
   [data-theme='light'] .contact-social-link:hover {
     color: #0f172a;
     background: #ffffff;
-    border-color: #6366f1;
-    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.18);
+    border-color: #0284c7;
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.18);
   }
   [data-theme='light'] .contact-social-link[data-platform="linkedin"]:hover {
     color: #0284c7;
@@ -391,7 +418,7 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
   [data-theme='light'] #contact input[type='email'],
   [data-theme='light'] #contact textarea {
     background: #ffffff !important;
-    border: 1.5px solid rgba(99, 102, 241, 0.25) !important;
+    border: 1.5px solid rgba(2, 132, 199, 0.25) !important;
     color: #1e293b !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
   }
@@ -404,8 +431,8 @@ const socialLinks = getSocialLinks(personalData as unknown as Record<string, str
   [data-theme='light'] #contact input:focus,
   [data-theme='light'] #contact textarea:focus {
     background: #ffffff !important;
-    border-color: #4f46e5 !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18) !important;
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
     outline: none !important;
   }
   [data-theme='light'] .contact-social-link {

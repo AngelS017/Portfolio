@@ -6,6 +6,13 @@ export default defineConfig({
   site: process.env.SITE_URL || 'https://angelsanz.dev',
   base: process.env.BASE_PATH || '/',
   trailingSlash: 'never',
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   build: { format: 'file' },
   vite: {
     plugins: [tailwindcss()],

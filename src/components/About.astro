@@ -1,55 +1,22 @@
 ---
-import personalData from '../data/personal.json';
+import {
+  getPersonalData,
+  useTranslations,
+  type Locale,
+  DEFAULT_LOCALE,
+} from '../lib/i18n';
 
-const educationList = [
-  {
-    degree: 'Máster Universitario en Inteligencia Artificial',
-    institution: 'Universidad Politécnica de Madrid (UPM)',
-    period: '2024 – Actualidad'
-  },
-  {
-    degree: 'Grado en Ingeniería Informática',
-    institution: 'Universidad Pública de Navarra (UPNA)',
-    period: '2018 – 2024'
-  },
-  {
-    degree: 'Estancia Académica Internacional (Beca Erasmus+)',
-    institution: 'Grenoble INP · Institut Polytechnique de Grenoble (Francia)',
-    period: '2023'
-  },
-  {
-    degree: 'Diploma de Especialización en Desarrollo de Videojuegos y Realidad Virtual',
-    institution: 'Universidad Pública de Navarra (UPNA)',
-    period: '2018 – 2023'
-  }
-];
+interface Props {
+  lang?: Locale;
+}
 
-const pillars = [
-  {
-    title: 'Machine Learning & Deep Learning',
-    desc: 'Modelado predictivo, redes neuronales y análisis avanzado de datos.',
-    tools: ['PyTorch', 'Keras', 'Scikit-Learn', 'NumPy', 'Pandas'],
-    icon: 'brain'
-  },
-  {
-    title: 'Reinforcement Learning & Optimización',
-    desc: 'Agentes inteligentes, simulación de entornos y algoritmos de optimización.',
-    tools: ['DQN / PPO', 'PyTorch', 'Ray Tune', 'Pymgrid', 'Metaheurísticas'],
-    icon: 'target'
-  },
-  {
-    title: 'Lenguajes de Programación',
-    desc: 'Computación científica, algoritmia eficiente y desarrollo de software robusto.',
-    tools: ['Python', 'R', 'C', 'Java'],
-    icon: 'code'
-  },
-  {
-    title: 'Sistemas & Entornos de Desarrollo',
-    desc: 'Gestión de entornos operativos, control de versiones y automatización de flujos.',
-    tools: ['Linux', 'Windows', 'Git', 'Bash'],
-    icon: 'settings'
-  }
-];
+const { lang = DEFAULT_LOCALE } = Astro.props;
+
+const personalData = getPersonalData(lang);
+const t = useTranslations(lang);
+
+const educationList = t.education;
+const pillars = t.pillars;
 ---
 
 <section
@@ -62,14 +29,14 @@ const pillars = [
       <!-- Section Header -->
       <div class="text-center mb-8 sm:mb-10 reveal">
         <p class="text-sm font-semibold tracking-widest text-highlight uppercase mb-2">
-          Conóceme · Trayectoria & Enfoque
+          {t.aboutEyebrow}
         </p>
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold section-title">
-          Sobre Mí
+          {t.aboutTitle}
         </h2>
       </div>
 
-      <!-- Bento Grid Layout: Option 1 -->
+      <!-- About Bento Grid Layout -->
       <div class="space-y-6 sm:space-y-8">
         <!-- Top Tier: 2 Equal-Height Columns (Presentation & Academic Timeline) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
@@ -77,58 +44,53 @@ const pillars = [
           <article class="about-card reveal h-full flex flex-col justify-between" style="transition-delay: 0.1s;">
             <div>
               <div class="flex items-center gap-3 mb-4">
-                <span class="about-card-badge">Presentación</span>
+                <span class="about-card-badge">{t.badgeOverview}</span>
                 <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                  Ingeniero en Inteligencia Artificial y Machine Learning
+                  {t.headlineOverview}
                 </h3>
               </div>
 
               <div class="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
                 <p>
-                  Soy <strong class="text-white font-semibold">{personalData.name}</strong>, afincado en {personalData.location}. Mi enfoque une un sólido <strong class="text-white font-semibold">dominio matemático y algorítmico</strong> con una arquitectura de software rigurosa, lo que me permite comprender en profundidad el funcionamiento de los modelos, evaluar críticamente su desempeño y explicar sus decisiones con transparencia <span class="text-slate-400 italic">(o hasta donde los modelos nos dejen y las matemáticas no nos vuelvan locos)</span>.
+                  {t.p1Part1}<strong class="text-white font-semibold">{personalData.name}</strong>{t.p1Part2}{personalData.location}{t.p1Part3}<strong class="text-white font-semibold">{t.p1Strong1}</strong>{t.p1Part4}<span class="text-slate-400 italic">{t.p1Italic}</span>{t.p1Part5}
                 </p>
                 <p>
-                  Con una firme base académica en <strong class="text-white font-semibold">Inteligencia Artificial y Computación</strong>, centro mi trabajo en el modelado avanzado de datos, el entrenamiento e interpretabilidad de redes neuronales profundas (Deep Learning) y el diseño de agentes autónomos mediante Aprendizaje por Refuerzo.
+                  {t.p2Part1}<strong class="text-white font-semibold">{t.p2Strong}</strong>{t.p2Part2}
                 </p>
-                <div class="about-manifesto-quote p-4 rounded-xl mt-4">
-                  <p class="text-xs sm:text-sm italic leading-relaxed text-slate-200">
-                    «Para mí, la inteligencia artificial no es una caja negra: dominar sus fundamentos matemáticos es esencial para comprender qué ocurre bajo el capó, evaluar el comportamiento de los modelos más allá de métricas superficiales y explicar sus resultados de forma transparente y fundamentada.»
-                  </p>
-                </div>
               </div>
             </div>
 
             <!-- Clean Bottom Stats / Highlights Bar -->
             <div class="mt-6 pt-5 border-t border-slate-700/40 grid grid-cols-3 gap-2 text-center">
               <div class="p-2">
-                <div class="text-base sm:text-lg font-bold text-white">IA & ML</div>
-                <div class="text-[11px] text-slate-400 font-medium">Especialización</div>
+                <div class="text-base sm:text-lg font-bold text-white">{t.stat1Val}</div>
+                <div class="text-[11px] text-slate-400 font-medium">{t.stat1Lbl}</div>
               </div>
               <div class="p-2 border-x border-slate-700/30">
-                <div class="text-base sm:text-lg font-bold text-white">UPM · UPNA</div>
-                <div class="text-[11px] text-slate-400 font-medium">Formación Oficial</div>
+                <div class="text-base sm:text-lg font-bold text-white">{t.stat2Val}</div>
+                <div class="text-[11px] text-slate-400 font-medium">{t.stat2Lbl}</div>
               </div>
               <div class="p-2">
-                <div class="text-base sm:text-lg font-bold text-white">Madrid</div>
-                <div class="text-[11px] text-slate-400 font-medium">Ubicación</div>
+                <div class="text-base sm:text-lg font-bold text-white">{t.stat3Val}</div>
+                <div class="text-[11px] text-slate-400 font-medium">{t.stat3Lbl}</div>
               </div>
             </div>
           </article>
 
-          <!-- Card 2: Academic Timeline (No nested boxes) -->
+          <!-- Card 2: Academic Timeline -->
           <article class="about-card reveal h-full flex flex-col" style="transition-delay: 0.15s;">
             <div class="flex items-center gap-3 mb-3 sm:mb-4">
-              <span class="about-card-badge">Académico</span>
+              <span class="about-card-badge">{t.badgeAcademic}</span>
               <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                Educación Universitaria Oficial
+                {t.headlineAcademic}
               </h3>
             </div>
 
             <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-5">
-              Base formal en Ingeniería Informática con especialización de posgrado en Inteligencia Artificial, complementada con formación internacional.
+              {t.descAcademic}
             </p>
 
-            <!-- Fluid Academic Timeline without nested boxes -->
+            <!-- Academic Timeline -->
             <div class="about-timeline relative pl-6 space-y-6 flex-1 flex flex-col justify-between">
               {educationList.map((item) => (
                 <div class="about-timeline-item relative">
@@ -153,9 +115,9 @@ const pillars = [
         <!-- Bottom Tier: Technical Specializations in 4 Equal-Height Columns -->
         <div class="reveal" style="transition-delay: 0.25s;">
           <div class="flex items-center gap-3 mb-5 mt-2">
-            <span class="about-card-badge">Especialización</span>
+            <span class="about-card-badge">{t.badgePillars}</span>
             <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
-              Áreas de Enfoque Técnico
+              {t.headlinePillars}
             </h3>
           </div>
 
@@ -229,10 +191,10 @@ const pillars = [
   }
 
   .about-card:hover {
-    border-color: rgba(99, 102, 241, 0.4);
+    border-color: rgba(0, 229, 255, 0.4);
     box-shadow:
       0 12px 40px -10px rgba(0, 0, 0, 0.4),
-      0 0 25px -5px rgba(99, 102, 241, 0.15);
+      0 0 25px -5px rgba(0, 229, 255, 0.15);
   }
 
   .about-card-badge {
@@ -241,22 +203,17 @@ const pillars = [
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--accent);
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.28);
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.28);
     border-radius: 9999px;
     padding: 0.2rem 0.65rem;
     line-height: 1.2;
     display: inline-block;
   }
 
-  .about-manifesto-quote {
-    background: rgba(99, 102, 241, 0.08);
-    border-left: 3px solid var(--accent);
-  }
-
   /* Academic Timeline (no nested boxes) */
   .about-timeline {
-    border-left: 2px solid rgba(99, 102, 241, 0.25);
+    border-left: 2px solid rgba(0, 229, 255, 0.25);
   }
   .about-timeline-dot {
     position: absolute;
@@ -267,13 +224,13 @@ const pillars = [
     border-radius: 9999px;
     background: var(--accent);
     border: 2px solid var(--bg-card-solid);
-    box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
   }
 
   .education-period {
     color: var(--accent);
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.25);
     border-radius: 9999px;
     padding: 0.15rem 0.55rem;
     line-height: 1.2;
@@ -291,9 +248,9 @@ const pillars = [
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .about-pillar-card:hover {
-    border-color: rgba(99, 102, 241, 0.45);
+    border-color: rgba(0, 229, 255, 0.45);
     transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(99, 102, 241, 0.15);
+    box-shadow: 0 10px 28px rgba(0, 229, 255, 0.15);
   }
 
   .pillar-card-header {
@@ -321,16 +278,16 @@ const pillars = [
     width: 40px;
     height: 40px;
     border-radius: 0.65rem;
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.25);
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.25);
   }
 
   .pillar-tag {
     font-size: 0.68rem;
     font-weight: 600;
-    color: #a5b4fc;
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.28);
+    color: #7dd3fc;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.25);
     border-radius: 9999px;
     padding: 0.2rem 0.6rem;
     line-height: 1.2;
@@ -338,8 +295,8 @@ const pillars = [
   }
   .pillar-tag:hover {
     color: #ffffff;
-    background: rgba(99, 102, 241, 0.22);
-    border-color: rgba(99, 102, 241, 0.5);
+    background: rgba(0, 229, 255, 0.2);
+    border-color: rgba(0, 229, 255, 0.5);
   }
 
   /* Light Theme Overrides */
@@ -349,8 +306,8 @@ const pillars = [
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   }
   [data-theme='light'] .about-card:hover {
-    border-color: rgba(99, 102, 241, 0.45);
-    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.12);
+    border-color: rgba(2, 132, 199, 0.45);
+    box-shadow: 0 12px 32px rgba(2, 132, 199, 0.12);
   }
   [data-theme='light'] .about-card h3,
   [data-theme='light'] .about-card h4,
@@ -370,39 +327,32 @@ const pillars = [
     color: var(--text-dim) !important;
   }
   [data-theme='light'] .about-card-badge {
-    color: #4f46e5;
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.25);
-  }
-  [data-theme='light'] .about-manifesto-quote {
-    background: rgba(99, 102, 241, 0.05) !important;
-    border-left-color: #4f46e5 !important;
-  }
-  [data-theme='light'] .about-manifesto-quote p {
-    color: #334155 !important;
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
   }
   [data-theme='light'] .about-timeline {
-    border-left-color: rgba(99, 102, 241, 0.25) !important;
+    border-left-color: rgba(2, 132, 199, 0.25) !important;
   }
   [data-theme='light'] .about-timeline-dot {
-    background: #4f46e5 !important;
+    background: #0284c7 !important;
     border-color: #ffffff !important;
-    box-shadow: 0 0 8px rgba(79, 70, 229, 0.4) !important;
+    box-shadow: 0 0 8px rgba(2, 132, 199, 0.4) !important;
   }
   [data-theme='light'] .education-period {
-    color: #4f46e5;
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.25);
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
   }
   [data-theme='light'] .about-pillar-card {
     background: #ffffff !important;
-    border: 1px solid rgba(99, 102, 241, 0.2) !important;
-    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.04) !important;
+    border: 1px solid rgba(2, 132, 199, 0.18) !important;
+    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.04) !important;
   }
   [data-theme='light'] .about-pillar-card:hover {
     background: #ffffff !important;
-    border-color: rgba(99, 102, 241, 0.5) !important;
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.12) !important;
+    border-color: rgba(2, 132, 199, 0.5) !important;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.12) !important;
   }
   [data-theme='light'] .about-pillar-card h4 {
     color: #1e293b !important;
@@ -411,14 +361,14 @@ const pillars = [
     color: #475569 !important;
   }
   [data-theme='light'] .pillar-icon-box {
-    background: rgba(99, 102, 241, 0.1) !important;
-    border: 1px solid rgba(99, 102, 241, 0.25) !important;
-    color: #4f46e5 !important;
+    background: rgba(2, 132, 199, 0.1) !important;
+    border: 1px solid rgba(2, 132, 199, 0.25) !important;
+    color: #0284c7 !important;
   }
   [data-theme='light'] .pillar-tag {
-    color: #4338ca !important;
-    background: rgba(67, 56, 202, 0.08) !important;
-    border: 1px solid rgba(67, 56, 202, 0.25) !important;
+    color: #0284c7 !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+    border: 1px solid rgba(2, 132, 199, 0.25) !important;
   }
   [data-theme='light'] .border-slate-700\/40,
   [data-theme='light'] .border-slate-700\/30 {

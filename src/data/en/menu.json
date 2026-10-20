@@ -1,0 +1,28 @@
+{
+  "sections": [
+    {
+      "label": "About Me",
+      "shortLabel": "About Me",
+      "href": "#about",
+      "desc": "Background, education, and technical focus"
+    },
+    {
+      "label": "Portfolio",
+      "shortLabel": "Portfolio",
+      "href": "#projects",
+      "desc": "Personal projects and research work"
+    },
+    {
+      "label": "Certifications",
+      "shortLabel": "Certifications",
+      "href": "#certifications",
+      "desc": "Specializations, courses, and credentials"
+    },
+    {
+      "label": "Contact",
+      "shortLabel": "Contact",
+      "href": "#contact",
+      "desc": "Get in touch or start a collaboration"
+    }
+  ]
+}

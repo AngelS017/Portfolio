@@ -1,7 +1,23 @@
 ---
-import personalData from '../data/personal.json';
-import menu from '../data/menu.json';
-import siteData from '../data/site.json';
+import {
+  getPersonalData,
+  getMenuData,
+  getSiteData,
+  useTranslations,
+  type Locale,
+  DEFAULT_LOCALE,
+} from '../lib/i18n';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = DEFAULT_LOCALE } = Astro.props;
+
+const personalData = getPersonalData(lang);
+const menu = getMenuData(lang);
+const siteData = getSiteData(lang);
+const t = useTranslations(lang);
 
 const { sections } = menu;
 
@@ -21,9 +37,9 @@ const external = siteData.navExternal
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 glass-nav">
-  <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <nav class="container mx-auto px-4 sm:px-6 lg:px-8" aria-label={lang === 'es' ? 'Navegación principal' : 'Main navigation'}>
     <div class="flex items-center justify-between h-16">
-      <a href="#home" class="text-xl font-bold gradient-text tracking-tight shrink-0">
+      <a href={lang === 'es' ? '#home' : '/en#home'} class="text-xl font-bold gradient-text tracking-tight shrink-0">
         {personalData.name}
       </a>
 
@@ -38,12 +54,33 @@ const external = siteData.navExternal
       </div>
 
       <div class="flex items-center gap-3">
-        <label class="switch" aria-label="Cambiar modo claro/oscuro" title="Cambiar modo claro/oscuro">
+        <!-- Language Switcher Pill -->
+        <div class="lang-switch" role="group" aria-label={t.langAria}>
+          <a
+            href={lang === 'es' ? '#home' : '/'}
+            data-lang-target="es"
+            class={`lang-btn ${lang === 'es' ? 'active' : ''}`}
+            aria-current={lang === 'es' ? 'true' : undefined}
+          >
+            ES
+          </a>
+          <span class="lang-divider" aria-hidden="true">/</span>
+          <a
+            href={lang === 'en' ? '#home' : '/en'}
+            data-lang-target="en"
+            class={`lang-btn ${lang === 'en' ? 'active' : ''}`}
+            aria-current={lang === 'en' ? 'true' : undefined}
+          >
+            EN
+          </a>
+        </div>
+
+        <label class="switch" aria-label={t.themeAria} title={t.themeAria}>
           <span class="sun"
             ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
               ><g fill="#918155"
                 ><circle r="5" cy="12" cx="12"></circle><path
-                  d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"
+                  d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"
                 ></path></g
               ></svg
             ></span
@@ -59,8 +96,8 @@ const external = siteData.navExternal
           <span class="slider"></span>
         </label>
 
-        <a href="#contact" class="cta-btn hidden sm:inline-flex">Contáctame</a>
-        <button id="menu-open-btn" class="hamburger-btn" aria-label="Abrir menú">
+        <a href="#contact" class="cta-btn hidden sm:inline-flex">{t.ctaContact}</a>
+        <button id="menu-open-btn" class="hamburger-btn" aria-label={lang === 'es' ? 'Abrir menú' : 'Open menu'}>
           <span></span>
           <span></span>
           <span></span>
@@ -75,10 +112,10 @@ const external = siteData.navExternal
   class="overlay"
   role="dialog"
   aria-modal="true"
-  aria-label="Navegación del sitio"
+  aria-label={lang === 'es' ? 'Navegación del sitio' : 'Site navigation'}
   aria-hidden="true"
 >
-  <button id="menu-close-btn" class="overlay-close" aria-label="Cerrar menú">
+  <button id="menu-close-btn" class="overlay-close" aria-label={lang === 'es' ? 'Cerrar menú' : 'Close menu'}>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
     </svg>
@@ -87,7 +124,28 @@ const external = siteData.navExternal
   <div class="overlay-glow" aria-hidden="true"></div>
 
   <div class="overlay-inner">
-    <p class="overlay-eyebrow">Explorar</p>
+    <div class="flex items-center justify-between mb-4">
+      <p class="overlay-eyebrow mb-0">{lang === 'es' ? 'Explorar' : 'Explore'}</p>
+      <div class="lang-switch" role="group" aria-label={t.langAria}>
+        <a
+          href={lang === 'es' ? '#home' : '/'}
+          data-lang-target="es"
+          class={`lang-btn ${lang === 'es' ? 'active' : ''}`}
+          aria-current={lang === 'es' ? 'true' : undefined}
+        >
+          ES
+        </a>
+        <span class="lang-divider" aria-hidden="true">/</span>
+        <a
+          href={lang === 'en' ? '#home' : '/en'}
+          data-lang-target="en"
+          class={`lang-btn ${lang === 'en' ? 'active' : ''}`}
+          aria-current={lang === 'en' ? 'true' : undefined}
+        >
+          EN
+        </a>
+      </div>
+    </div>
     <nav class="overlay-nav">
       {
         sections.map((item, i) => (
@@ -116,7 +174,7 @@ const external = siteData.navExternal
     </nav>
 
     <div class="overlay-bottom">
-      <p class="overlay-bottom-label">Enlaces</p>
+      <p class="overlay-bottom-label">{lang === 'es' ? 'Enlaces' : 'Links'}</p>
       {
         external.map((link) => (
           <a href={link.url} target="_blank" rel="noopener" class="overlay-quick-link">
@@ -142,6 +200,41 @@ const external = siteData.navExternal
 </div>
 
 <style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.25rem 0.6rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    user-select: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  .lang-btn {
+    color: var(--text-dim);
+    transition: color 0.2s ease;
+    padding: 0.1rem 0.25rem;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .lang-btn:hover {
+    color: var(--text);
+  }
+  .lang-btn.active {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .lang-divider {
+    color: var(--border-subtle);
+    font-size: 0.7rem;
+    opacity: 0.5;
+  }
+
   .cta-btn {
     align-items: center;
     padding: 0.5rem 1.15rem;
@@ -149,7 +242,7 @@ const external = siteData.navExternal
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: -0.02em;
-    border: 1px solid rgba(99, 102, 241, 0.4);
+    border: 1px solid rgba(0, 229, 255, 0.35);
     color: var(--accent);
     white-space: nowrap;
     transition:
@@ -158,7 +251,7 @@ const external = siteData.navExternal
       color 0.2s ease;
   }
   .cta-btn:hover {
-    background: rgba(99, 102, 241, 0.12);
+    background: rgba(0, 229, 255, 0.12);
     border-color: var(--accent);
   }
   .cta-btn:focus-visible {
@@ -166,8 +259,8 @@ const external = siteData.navExternal
     outline-offset: 2px;
   }
   [data-theme='light'] .cta-btn {
-    border-color: rgba(79, 70, 229, 0.35);
-    background: rgba(79, 70, 229, 0.05);
+    border-color: rgba(2, 132, 199, 0.35);
+    background: rgba(2, 132, 199, 0.05);
   }
   [data-theme='light'] .cta-btn:hover {
     color: #ffffff;
@@ -368,7 +461,7 @@ const external = siteData.navExternal
     width: 500px;
     height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.12) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -461,7 +554,7 @@ const external = siteData.navExternal
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(99, 102, 241, 0.05);
+    background: rgba(0, 229, 255, 0.06);
     opacity: 0;
     transition: opacity 0.25s ease;
   }
@@ -478,7 +571,7 @@ const external = siteData.navExternal
     transition: color 0.2s ease;
   }
   .overlay-link:hover .overlay-num {
-    color: rgba(99, 102, 241, 0.7);
+    color: #38bdf8;
   }
 
   .overlay-link-body {
@@ -520,7 +613,7 @@ const external = siteData.navExternal
       transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .overlay-link:hover .overlay-arrow {
-    color: #a5b4fc;
+    color: #00e5ff;
     transform: translate(4px, -4px);
   }
 
@@ -691,4 +784,17 @@ const external = siteData.navExternal
   );
 
   sections.forEach((s) => io.observe(s));
+
+  // Language switch navigation preserving current section hash
+  document.querySelectorAll<HTMLAnchorElement>('.lang-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const targetHref = btn.getAttribute('href');
+      if (!targetHref || targetHref.startsWith('#')) return;
+
+      e.preventDefault();
+      const hash = window.location.hash;
+      const cleanTarget = targetHref.replace(/\/$/, '') || '/';
+      window.location.href = `${cleanTarget}${hash}`;
+    });
+  });
 </script>
